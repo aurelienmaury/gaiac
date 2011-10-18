@@ -10,7 +10,7 @@
 		
 		<div id="edit-member" class="content " role="main">
       <div class="page-header">
-			<h1><g:message code="default.edit.label" args="[entityName]" /></h1>
+			<h1><g:message code='members.label' default='Members' /></h1>
 			</div>
 
 			<div class="row">
@@ -28,7 +28,6 @@
 			<g:hasErrors bean="${memberInstance}">
 			<div class="alert-message error">
 				<ul>
-				<li>TEST</li>
 				<g:eachError bean="${memberInstance}" var="error">
 					<li <g:if test="${error in org.springframework.validation.FieldError}">data-field-id="${error.field}"</g:if>><g:message error="${error}"/></li>
 				</g:eachError>

@@ -103,5 +103,9 @@ grails.plugins.springsecurity.userLookup.authorityJoinClassName = 'org.gaiac.dom
 grails.plugins.springsecurity.authority.className = 'org.gaiac.domain.Role'
 
 gaiac.repository.path="/tmp"
-grails.plugin.databasemigration.updateOnStart=true
-grails.plugin.databasemigration.updateOnStartFileNames=['changelog.groovy']
+environments {
+  test {
+    grails.plugin.databasemigration.updateOnStart=true
+    grails.plugin.databasemigration.updateOnStartFileNames=['changelog.groovy']
+  }
+}

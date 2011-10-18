@@ -18,9 +18,20 @@
 		<span class="required-indicator">*</span>
 	</label>
 	<div class="input">
-	<g:textField name="password" required="" value="${memberInstance?.password}"/>
+	<g:passwordField name="password" required="" value="${memberInstance?.password}"/>
 	</div>
 </div>
+
+<div class="clearfix ${hasErrors(bean: memberInstance, field: 'password', 'error')} required">
+	<label for="confirm">
+		<g:message code="member.confirm.password.label" default="Confirm password" />
+		<span class="required-indicator">*</span>
+	</label>
+	<div class="input">
+	<g:passwordField name="confirmPassword" required="" value="${memberInstance?.password}"/>
+	</div>
+</div>
+
 
 <div class="clearfix ${hasErrors(bean: memberInstance, field: 'accountExpired', 'error')} ">
 	<label for="accountExpired">

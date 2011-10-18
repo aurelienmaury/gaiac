@@ -20,13 +20,21 @@ class MemberController {
     }
 
     def save() {
+
         def memberInstance = new Member(params)
-        if (!memberInstance.save(flush: true)) {
-            render(view: "create", model: [memberInstance: memberInstance])
+
+        if (params.confirmPassword != params.password) {
+            memberInstance.errors.rejectValue('password','confirmation.false')
+            render(view: 'create', model: [memberInstance: memberInstance])
             return
         }
 
-		flash.success = message(code: 'default.created.message', args: [message(code: 'member.label', default: 'Member'), memberInstance.id])
+        if (!memberInstance.save(flush: true)) {
+            render(view: 'create', model: [memberInstance: memberInstance])
+            return
+        }
+
+  		  flash.success = message(code: 'default.created.message', args: [message(code: 'member.label', default: 'Member'), memberInstance.id])
         redirect(action: "show", id: memberInstance.id)
     }
 
@@ -71,6 +79,12 @@ class MemberController {
             }
         }
 
+        if (params.confirmPassword != params.password) {
+            memberInstance.errors.rejectValue('password','confirmation.false')
+            render(view: "edit", model: [memberInstance: memberInstance])
+            return
+        }
+
         memberInstance.properties = params
 
         if (!memberInstance.save(flush: true)) {
@@ -78,7 +92,7 @@ class MemberController {
             return
         }
 
-		flash.success = message(code: 'default.updated.message', args: [message(code: 'member.label', default: 'Member'), memberInstance.email])
+		    flash.success = message(code: 'default.updated.message', args: [message(code: 'member.label', default: 'Member'), memberInstance.email])
         redirect(action: "show", id: memberInstance.id)
     }
 
