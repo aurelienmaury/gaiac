@@ -37,18 +37,7 @@
 						<g:textField name="email" value="${memberInstance?.email}" class="disabled" disabled="true"/>
 					</div>
 				</div>
-				
-				
-				<div class="clearfix ${hasErrors(bean: memberInstance, field: 'password', 'error')} required">
-	<label for="password">
-		<g:message code="member.password.label" default="Password" />
-		<span class="required-indicator">*</span>
-	</label>
-	<div class="input">
-	<g:passwordField name="password" required="" value="${memberInstance?.password}" class="disabled" disabled="true"/>
-	</div>
-</div>
-
+			
 <div class="clearfix">
 	<label for="accountExpired">
 		<g:message code="member.accountExpired.label" default="Account Expired" />
