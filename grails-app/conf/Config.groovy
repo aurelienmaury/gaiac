@@ -36,10 +36,10 @@ grails.resources.adhoc.patterns = ['/images/*', '/css/*', '/js/*', '/plugins/*']
 
 grails.resources.modules = {
   core {
-	dependsOn 'jquery'
+  dependsOn 'jquery'
     resource url:'/css/bootstrap.css'
-	resource url:'/js/bootstrap-alerts.js'
-	resource url:'/js/bootstrap-dropdown.js'
+  resource url:'/js/bootstrap-alerts.js'
+  resource url:'/js/bootstrap-dropdown.js'
   }
 }
 // The default codec used to encode data with ${}
@@ -76,24 +76,23 @@ environments {
 
 // log4j configuration
 log4j = {
-    // Example of changing the log pattern for the default console
-    // appender:
-    //
-    //appenders {
-    //    console name:'stdout', layout:pattern(conversionPattern: '%c{2} %m%n')
-    //}
+    appenders {
+        console name:'stdout', layout:pattern(conversionPattern: '%c{2} %m%n')
+    }
 
-    error  'org.codehaus.groovy.grails.web.servlet',  //  controllers
-           'org.codehaus.groovy.grails.web.pages', //  GSP
-           'org.codehaus.groovy.grails.web.sitemesh', //  layouts
-           'org.codehaus.groovy.grails.web.mapping.filter', // URL mapping
-           'org.codehaus.groovy.grails.web.mapping', // URL mapping
-           'org.codehaus.groovy.grails.commons', // core / classloading
-           'org.codehaus.groovy.grails.plugins', // plugins
-           'org.codehaus.groovy.grails.orm.hibernate', // hibernate integration
-           'org.springframework',
-           'org.hibernate',
-           'net.sf.ehcache.hibernate'
+    error 'org.codehaus.groovy.grails.web.servlet',  //  controllers
+          'org.codehaus.groovy.grails.web.pages', //  GSP
+          'org.codehaus.groovy.grails.web.sitemesh', //  layouts
+          'org.codehaus.groovy.grails.web.mapping.filter', // URL mapping
+          'org.codehaus.groovy.grails.web.mapping', // URL mapping
+          'org.codehaus.groovy.grails.commons', // core / classloading
+          'org.codehaus.groovy.grails.plugins', // plugins
+          'org.codehaus.groovy.grails.orm.hibernate', // hibernate integration
+          'org.springframework',
+          'org.hibernate',
+          'net.sf.ehcache.hibernate'
+
+    debug 'grails.app.controllers'
 }
 
 // Added by the Spring Security Core plugin:
@@ -103,5 +102,10 @@ grails.plugins.springsecurity.userLookup.authorityJoinClassName = 'org.gaiac.dom
 grails.plugins.springsecurity.authority.className = 'org.gaiac.domain.Role'
 
 gaiac.repository.path="/tmp"
-grails.plugin.databasemigration.updateOnStart=true
-grails.plugin.databasemigration.updateOnStartFileNames=['changelog.groovy']
+
+environments {
+  test {
+    grails.plugin.databasemigration.updateOnStart=true
+    grails.plugin.databasemigration.updateOnStartFileNames=['changelog.groovy']
+  }
+}
