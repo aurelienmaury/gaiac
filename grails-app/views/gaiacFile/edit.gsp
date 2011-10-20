@@ -53,10 +53,5 @@
 			</div>
 		</div>
 		</div>
-<r:script>
-$(document).ready(function() {
-  $('#topbar-search').addClass('active');
-});
-</r:script>
 	</body>
 </html>

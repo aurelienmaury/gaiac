@@ -7,7 +7,11 @@ class GaiacFile {
   String path
 
   static constraints = {
-	  name blank:false, unique: true
-	  path blank:false, unique: false
+    name blank:false, unique: true
+    path blank:false, unique: false
+  }
+
+  static searchable = {
+    name boost: 2.0
   }
 }
