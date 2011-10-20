@@ -57,5 +57,10 @@
       </div>
       </div>
     </div>
+    <r:script>
+$(document).ready(function() {
+  $('#topbar-members').addClass('active');
+});
+</r:script>
   </body>
 </html>

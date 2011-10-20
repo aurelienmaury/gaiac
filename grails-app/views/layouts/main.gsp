@@ -30,11 +30,11 @@
 					<ul class="nav">
 						<sec:ifAnyGranted roles="ROLE_ADMIN,ROLE_BASIC">
 
-							<li id="topbar-search"><g:link controller='gaiacFile'>Search</g:link>
+							<li id="topbar-search" ${activeTopbarSearch?'class="active"':''}><g:link controller='gaiacFile'>Search</g:link>
 							</li>
 						</sec:ifAnyGranted>
 						<sec:ifAnyGranted roles="ROLE_ADMIN">
-							<li id="topbar-members"><g:link controller='member'>Members</g:link>
+							<li id="topbar-members" ${activeTopbarMembers?'class="active"':''}><g:link controller='member'>Members</g:link>
 							</li>
 						</sec:ifAnyGranted>
 					</ul>

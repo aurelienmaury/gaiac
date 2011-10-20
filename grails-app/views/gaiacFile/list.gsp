@@ -3,20 +3,14 @@
 <!doctype html>
 <html>
 <head>
-<meta name="layout" content="main">
-<g:set var="entityName"
-	value="${message(code: 'gaiacFile.label', default: 'GaiacFile')}" />
-<title><g:message code="default.list.label" args="[entityName]" />
-</title>
+	<meta name="layout" content="main">
 </head>
 <body>
-
 	<div id="list-gaiacFile" class="content" role="main">
 		<div class="page-header">
-			<h1>
-				<g:message code='gaiacFile.label' default='GaiacFile' />
-			</h1>
+			<h1><g:message code='gaiacFile.label' default='GaiacFile' /></h1>
 		</div>
+		
 		<div class="row">
 			<div class="span16">
 
@@ -32,7 +26,27 @@
 					</li>
 					</sec:ifAllGranted>
 				</ul>
+			</div>
+		</div>
 				
+		<div class="row">
+			<div class="span16">
+				<g:form action="search">
+					<fieldset class="form">
+						<label for="query" class="btnPreField">
+							<g:actionSubmit class="btn primary" style="display:inline" action="search" value="${message(code: 'default.button.search.label', default: 'Search')}" />
+						</label>
+						<div class="input">
+							<g:textField name="query" value="${query}" class="span11" id="searchField"/>
+						</div>		
+					</div>
+					</fieldset>
+				</g:form>
+			</div>
+		</div>
+		<div class="row">
+			<div class="span16">
+
 				<flash:all/>
 
 				<table class="zebra-striped">
@@ -62,10 +76,5 @@
 			</div>
 		</div>
 	</div>
-<r:script>
-$(document).ready(function() {
-  $('#topbar-search').addClass('active');
-});
-</r:script>
 </body>
 </html>

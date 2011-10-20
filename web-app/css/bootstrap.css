@@ -630,6 +630,11 @@ label {
   text-align: right;
   color: #404040;
 }
+
+label.btnPreField {
+  padding: 0;
+}
+
 form .input {
   margin-left: 150px;
 }
