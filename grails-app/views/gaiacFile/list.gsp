@@ -56,6 +56,7 @@
 							<g:sortableColumn property="name"
 								title="${message(code: 'gaiacFile.name.label', default: 'Name')}" />
 
+							<th></th>
 						</tr>
 					</thead>
 					<tbody>
@@ -65,6 +66,11 @@
 								<td><g:link action="show" id="${gaiacFileInstance.id}">
 										${fieldValue(bean: gaiacFileInstance, field: "name")}
 									</g:link>
+								</td>
+								<td>
+										<g:link controller="dl" action="file" id="${gaiacFileInstance.id}">
+											<img src="${resource(dir:'images',file: 'download_16.png')}"/>
+										</g:link>
 								</td>
 							</tr>
 						</g:each>
