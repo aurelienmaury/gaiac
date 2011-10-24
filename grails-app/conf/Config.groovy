@@ -106,7 +106,7 @@ gaiac.max.dl.per.user=4
 
 environments {
   test {
-    grails.plugin.databasemigration.updateOnStart=true
-    grails.plugin.databasemigration.updateOnStartFileNames=['changelog.groovy']
+//    grails.plugin.databasemigration.updateOnStart=true
+    //grails.plugin.databasemigration.updateOnStartFileNames=['changelog.groovy']
   }
 }

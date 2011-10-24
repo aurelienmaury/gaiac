@@ -13,7 +13,6 @@
 		
 		<div class="row">
 			<div class="span16">
-
 				<ul class="pills">
 					<li class="active"><g:link action="list">
 							<g:message code="short.list.label" />
@@ -23,6 +22,8 @@
 					<li><g:link action="create">
 							<g:message code="short.upload.label" default="Upload"/>
 						</g:link>
+					</li>
+					<li><g:link action="discover"><g:message code="short.discover.label" default="Discover"/></g:link>
 					</li>
 					</sec:ifAllGranted>
 				</ul>

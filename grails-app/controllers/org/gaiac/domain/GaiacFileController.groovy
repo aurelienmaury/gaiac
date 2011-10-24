@@ -160,6 +160,31 @@ class GaiacFileController {
       flash.error = message(code: 'default.not.deleted.message', args: [message(code: 'gaiacFile.label', default: 'GaiacFile'), params.id])
       redirect(action: "show", id: params.id)
     }
-
   }
+
+  def discover = {
+    if (params.pathToDiscover) {
+      def startingPoint = new File(params.pathToDiscover)
+      if (!startingPoint.exists()) {
+        flash.error = "Path not found."
+        return
+      }
+
+      if (!startingPoint.isDirectory()) {
+        flash.error = "Path is not a directory."
+        return
+      }
+
+      startingPoint.eachFileRecurse { current ->
+        if (current.isFile()) {
+          def register = new GaiacFile()
+          register.name = current.name
+          register.path = current.absolutePath
+          register.save()
+        }
+      }
+      flash.success = "Successfully discovered."
+    }
+  }
+
 }
