@@ -4,7 +4,6 @@ class Member {
 
 	transient springSecurityService
 
-
 	String email
 	String password
 	boolean enabled
