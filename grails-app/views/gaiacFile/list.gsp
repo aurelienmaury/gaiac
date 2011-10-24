@@ -57,6 +57,8 @@
 								title="${message(code: 'gaiacFile.name.label', default: 'Name')}" />
 
 							<th></th>
+
+							<th></th>
 						</tr>
 					</thead>
 					<tbody>
@@ -66,6 +68,9 @@
 								<td><g:link action="show" id="${gaiacFileInstance.id}">
 										${fieldValue(bean: gaiacFileInstance, field: "name")}
 									</g:link>
+								</td>
+								<td>
+									${fieldValue(bean: gaiacFileInstance, field: "downloaded")}
 								</td>
 								<td>
 										<g:link controller="dl" action="file" id="${gaiacFileInstance.id}">
