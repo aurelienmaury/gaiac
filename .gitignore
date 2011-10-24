@@ -3,3 +3,4 @@ target-eclipse
 .classpath
 .project
 .settings
+stacktrace.log

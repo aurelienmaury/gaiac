@@ -31,28 +31,27 @@
 						</g:link>
 					</li>
 					<sec:ifAllGranted roles="ROLE_ADMIN">
-					<li class="active"><g:link action="create">
-							<g:message code="short.upload.label" />
+					<li><g:link action="create">
+							<g:message code="short.upload.label" default="Upload"/>
 						</g:link>
 					</li>
-					<li><g:link action="discover"><g:message code="short.discover.label" default="Discover"/></g:link>
+					<li class="active"><a href="#"><g:message code="short.discover.label" default="Discover"/></a>
 					</li>
 					</sec:ifAllGranted>
 					
 				</ul>
 
-				<g:form action="save" enctype="multipart/form-data">
+				<g:form action="discover">
 					<fieldset class="form">
 						<div class="clearfix">
-							<label for="actualFile"><g:message code="short.upload.label"/> </label>
+							<label for="pathToDiscover"><g:message code="short.discover.label" default="Discover"/></label>
 							<div class="input">
-								<input type="file" name="uploadList"  multiple="multiple" required=""/>
+								<g:textField name="pathToDiscover"/>
 							</div>
 						</div>
 					</fieldset>
 					<fieldset class="actions">
-						<g:submitButton name="create" class="btn primary"
-							value="${message(code: 'short.upload.label')}" />
+						<g:submitButton name="create" class="btn primary" value="${message(code: 'short.discover.label', default:'Discover')}" />
 					</fieldset>
 				</g:form>
 			</div>
