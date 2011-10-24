@@ -19,8 +19,7 @@
 				
 				<flash:warning/>
 
-				<form action='${postUrl}' method='POST' id='loginForm'
-					class='cssform' autocomplete='off'>
+				<form action='${postUrl}' method='POST' id='loginForm' class='cssform'>
 					<div class="clearfix">
 						<label for='username'><g:message
 								code="springSecurity.login.username.label" />:</label>

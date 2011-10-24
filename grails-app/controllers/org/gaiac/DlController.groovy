@@ -8,43 +8,67 @@ import grails.plugins.springsecurity.Secured
 class DlController {
 
   def springSecurityService
-  def grailsApplication
+
+  def dlKeeperService
 
   def file = {
     
-
+    log.debug "File download request: id=${params.id}"
     def gaiacFile = GaiacFile.get(params.id)
     if (!gaiacFile) {
+      log.debug "File with id: ${params.id} not found."
       flash.error = "The requested file can not be found."
       render view:"/managedError"
       return
     } 
 
-    log.debug "Downloading file: ${gaiacFile.path}"
- 
     try {
-      Member.incDlNumber(currentUser.id)
-
       def file = new File(gaiacFile.path)
-      if (file.exists()) {
-          def filename = file.absolutePath.split('/').reverse()[0]
-          response.setContentType("application/octet-stream")
-          response.setHeader("Content-Disposition", "attachment; filename=${filename}")
-          response.setContentLength(file.size() as int)
-          
-          int read = 0;
-          byte[] bytes = new byte[1024];
- 
-          def output = response.outputStream
-          file.withInputStream { input ->
-            while ((read = input.read(bytes)) != -1) {
-              output.write(bytes, 0, read);
-            }
+      if (!file.exists()) {
+        
+        log.warn "File not found: ${gaiacFile.path} inspect file: id=${params.id}"
+
+        flash.error = "The requested file can not be found."
+        render view:"/managedError"
+        return
+      } else {
+
+        if (!dlKeeperService.startDl(springSecurityService.principal.id)) {
+
+          log.warn "User ${springSecurityService.principal.username} has hit max download number while requesting file: id=${params.id}"
+
+          flash.error = "You've hit the max parallel download number."
+          render view:"/managedError"
+          return
+        }
+
+        
+        def filename = file.absolutePath.split('/').reverse()[0]
+
+        log.debug "Sending ${filename} to ${springSecurityService.principal.username} started"
+
+        response.setContentType("application/octet-stream")
+        response.setHeader("Content-Disposition", "attachment; filename=${filename}")
+        response.setContentLength(file.size() as int)
+        
+        int read = 0;
+        byte[] bytes = new byte[1024];
+
+        def output = response.outputStream
+        file.withInputStream { input ->
+          while ((read = input.read(bytes)) != -1) {
+            output.write(bytes, 0, read);
           }
-          output.flush()
+        }
+
+        gaiacFile.completeDownload()
       }
     } finally {
-      log.debug "End of download, can do something here"
+      response.outputStream.flush()
+      response.outputStream.close()
+
+      dlKeeperService.finishDl(springSecurityService.principal.id)
+      log.debug "Sending ${filename} to ${springSecurityService.principal.username} finished"
     }
   }
 }
