@@ -1,7 +1,9 @@
 package org.gaiac.domain
 
 import org.springframework.dao.DataIntegrityViolationException
+import grails.plugins.springsecurity.Secured
 
+@Secured(["hasAnyRole('ROLE_ADMIN')"])
 class MemberController {
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]

@@ -102,6 +102,7 @@ grails.plugins.springsecurity.userLookup.authorityJoinClassName = 'org.gaiac.dom
 grails.plugins.springsecurity.authority.className = 'org.gaiac.domain.Role'
 
 gaiac.repository.path="/tmp"
+gaiac.max.dl.per.user=4
 
 environments {
   test {
