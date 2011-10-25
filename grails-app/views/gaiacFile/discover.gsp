@@ -6,9 +6,7 @@
 
 <body>
 	<div class="content">
-		<div class="page-header">
-			<h1><g:message code='gaiacFile.label' default='GaiacFile' /></h1>
-		</div>
+		
 		<div class="row">
 			<div class="span16">
 			
@@ -27,7 +25,7 @@
 
 				<ul class="pills">
 					<li><g:link action="list">
-							<g:message code="short.list.label" />
+							<g:message code="short.browse.label" />
 						</g:link>
 					</li>
 					<sec:ifAllGranted roles="ROLE_ADMIN">
@@ -44,7 +42,7 @@
 				<g:form action="discover">
 					<fieldset class="form">
 						<div class="clearfix">
-							<label for="pathToDiscover"><g:message code="short.discover.label" default="Discover"/></label>
+							<label for="pathToDiscover"><g:message code="discover.path.label" default="Server directory"/></label>
 							<div class="input">
 								<g:textField name="pathToDiscover"/>
 							</div>

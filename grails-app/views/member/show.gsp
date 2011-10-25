@@ -8,11 +8,9 @@
 		<title><g:message code="default.show.label" args="[entityName]" /></title>
 	</head>
 	<body>
-				</div>
-		<div id="show-member" class="content scaffold-show" role="main">
-			<div class="page-header">
-        <h1><g:message code='members.label' default='Members' /></h1>
-      </div>
+				
+		<div class="content">
+			
       <div class="row">
       <div class="span16">
 

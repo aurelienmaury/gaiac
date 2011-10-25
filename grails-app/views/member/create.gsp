@@ -8,10 +8,7 @@
 		<title><g:message code="default.create.label" args="[entityName]" /></title>
 	</head>
 	<body>
-    <div id="create-member" class="content scaffold-create" role="main">
-			<div class="page-header">
-        <h1><g:message code='members.label' default='Members' /></h1>
-      </div>
+    <div class="content">
 
 			<ul class="pills">
 				<li><g:link action="list"><g:message code="short.list.label"/></g:link></li>

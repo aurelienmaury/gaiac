@@ -4,7 +4,14 @@ import grails.util.GrailsUtil
 class BootStrap {
 
     def init = { servletContext ->
-      
+      initRoles()
+      initAccounts()
+    }
+
+    def destroy = {
+    }
+
+    private void initRoles() {
       if (!Role.findByAuthority('ROLE_ADMIN')) {
         new Role(authority: 'ROLE_ADMIN').save()
       }
@@ -12,30 +19,30 @@ class BootStrap {
       if (!Role.findByAuthority('ROLE_BASIC')) {
         new Role(authority: 'ROLE_BASIC').save()
       }
+    }
 
+    private void initAccounts() {
       if(!Member.findByEmail('admin@gaiac.org')) {
         def admin = new Member( email: 'admin@gaiac.org', 
                                 password: 'admin',
                                 enabled: true,
                                 accountLocked: false,
                                 accountExpired: false,
-                                passwordExpired: false).save(failOnError:true)				  
-    		new MemberRole(member: admin, role: Role.findByAuthority('ROLE_ADMIN')).save()
+                                passwordExpired: false).save(failOnError:true)          
+        new MemberRole(member: admin, role: Role.findByAuthority('ROLE_ADMIN')).save()
       }
-  		
+      
       switch (GrailsUtil.environment) {
         case "development":
-    		  def member = new Member( email: 'member@gaiac.org',
-                              			password: 'member',
-                              			enabled: true,
-                              			accountLocked: false,
-                              			accountExpired: false,
-                              			passwordExpired: false).save(failOnError:true)
-    			
-    		  new MemberRole(member: member, role: roleBasic).save()
+          def member = new Member( email: 'member@gaiac.org',
+                                    password: 'member',
+                                    enabled: true,
+                                    accountLocked: false,
+                                    accountExpired: false,
+                                    passwordExpired: false).save(failOnError:true)
+          
+          new MemberRole(member: member, role: Role.findByAuthority('ROLE_BASIC')).save()
           break
       }
-    }
-    def destroy = {
     }
 }
