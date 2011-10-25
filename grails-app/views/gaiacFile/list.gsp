@@ -82,9 +82,9 @@
 						</g:each>
 					</tbody>
 				</table>
-				<div class="pagination">
-					<g:paginate total="${gaiacFileInstanceTotal}" />
-				</div>
+				
+				<bs:paginate total="${gaiacFileInstanceTotal}" params="[query: query]"/>
+				
 			</div>
 		</div>
 	</div>
