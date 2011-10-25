@@ -105,8 +105,13 @@ gaiac.repository.path="/tmp"
 gaiac.max.dl.per.user=4
 
 environments {
-  test {
-//    grails.plugin.databasemigration.updateOnStart=true
-    //grails.plugin.databasemigration.updateOnStartFileNames=['changelog.groovy']
+  preprod {
+    grails.plugin.databasemigration.updateOnStart=true
+    grails.plugin.databasemigration.updateOnStartFileNames=['changelog.groovy']
+  }
+  
+  production {
+    grails.plugin.databasemigration.updateOnStart=true
+    grails.plugin.databasemigration.updateOnStartFileNames=['changelog.groovy']
   }
 }

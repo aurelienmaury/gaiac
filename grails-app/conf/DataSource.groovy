@@ -15,15 +15,22 @@ hibernate {
 environments {
 
     development {
-        dataSource {
-            dbCreate = "create-drop" // one of 'create', 'create-drop', 'update', 'validate', ''
-            url = "jdbc:h2:mem:devDb"
-        }
+      dataSource {
+        dbCreate = "create-drop" // one of 'create', 'create-drop', 'update', 'validate', ''
+        url = "jdbc:h2:mem:devDb"
+      }
     }
 
     test {
+      dataSource {
+        dbCreate = "create-drop" // one of 'create', 'create-drop', 'update', 'validate', ''
+        url = "jdbc:h2:mem:devDb"
+      }
+    }
+
+    preprod {
         dataSource {
-          dbCreate = "create-drop"
+          dbCreate = ''
           driverClassName = "com.mysql.jdbc.Driver"
           url = "jdbc:mysql://localhost:8889/gaiac"
           username = "root"
@@ -43,7 +50,7 @@ environments {
 
     production {
         dataSource {
-          dbCreate = "update"
+          dbCreate = ''
           driverClassName = "com.mysql.jdbc.Driver"
           url = "jdbc:mysql://localhost/gaiac"
           username = "gaiac"
