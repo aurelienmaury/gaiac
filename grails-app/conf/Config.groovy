@@ -74,16 +74,17 @@ environments {
     development {
         grails.logging.jul.usebridge = true
     }
-    production {
+    /*production {
         grails.logging.jul.usebridge = false
         grails.serverURL = "http://www.changeme.com"
-    }
+    }*/
 }
 
+gaiac.log.pattern = '%-5p [%c{2}] %m%n'
 // log4j configuration
 log4j = {
     appenders {
-        console name:'stdout', layout:pattern(conversionPattern: '%c{2} %m%n')
+        console name:'stdout', layout:pattern(conversionPattern: gaiac.log.pattern)
     }
 
     error 'org.codehaus.groovy.grails.web.servlet',  //  controllers
