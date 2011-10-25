@@ -25,11 +25,11 @@ class GaiacFileController {
   }
 
   def search() {
-      def response = GaiacFile.search("*${params.query}*")
-      log.debug "====> Result : $response"
-      render view:'list', model: [  query: params.query, 
-                                    gaiacFileInstanceList: response.results, 
-                                    gaiacFileInstanceTotal: GaiacFile.count() ]
+    params.max = Math.min(params.max ? params.int('max') : 10, 100)
+    def response = GaiacFile.search("*${params.query}*", params)
+    render view:'list', model: [  query: params.query, 
+                                  gaiacFileInstanceList: response.results, 
+                                  gaiacFileInstanceTotal: response.total ]
   }
 
   @Secured(['ROLE_ADMIN'])
@@ -40,46 +40,46 @@ class GaiacFileController {
   @Secured(['ROLE_ADMIN'])
   def save() {
   
-  def repoPath = grailsApplication.config.gaiac.repository.path
-  
-  def successfulUploads = []
-  def errorUploads = []
-  
-  def today = Calendar.getInstance().getTime()
-  def sdf = new SimpleDateFormat("yyyy-MM-dd")
-  def destDir = new File(repoPath+"/"+sdf.format(today))
-  if (!destDir.exists()) {
-    destDir.mkdir()
-  }
+    def repoPath = grailsApplication.config.gaiac.repository.path
     
-  request.getFiles('uploadList').each { uploadedFile ->
-    def filePath = destDir.absolutePath + "/" + uploadedFile.originalFilename
+    def successfulUploads = []
+    def errorUploads = []
     
-    try {
-    uploadedFile.transferTo(new File(filePath))
-    def gaiacFileInstance = new GaiacFile(name:uploadedFile.originalFilename, path: filePath)
+    def today = Calendar.getInstance().getTime()
+    def sdf = new SimpleDateFormat("yyyy-MM-dd")
+    def destDir = new File(repoPath+"/"+sdf.format(today))
+    if (!destDir.exists()) {
+      destDir.mkdir()
+    }
       
-    if (gaiacFileInstance.save(flush: true)) {
-      successfulUploads << gaiacFileInstance.name
-    } else {
-      errorUploads << gaiacFileInstance.name
+    request.getFiles('uploadList').each { uploadedFile ->
+      def filePath = destDir.absolutePath + "/" + uploadedFile.originalFilename
+      
+      try {
+        uploadedFile.transferTo(new File(filePath))
+        def gaiacFileInstance = new GaiacFile(name:uploadedFile.originalFilename, path: filePath)
+          
+        if (gaiacFileInstance.save(flush: true)) {
+          successfulUploads << gaiacFileInstance.name
+        } else {
+          errorUploads << gaiacFileInstance.name
+        }
+      } catch (Exception e) {
+        log.error("Error uploading ${uploadedFile.originalFilename}", e)
+        errorUploads << uploadedFile.originalFilename
+      }
     }
-    } catch (Exception e) {
-      log.error("Error uploading ${uploadedFile.originalFilename}", e)
-      errorUploads << uploadedFile.originalFilename
-    }
-  }
 
-  if (successfulUploads) {
-    def listing = "<ul><li>"+successfulUploads.join('</li><li>')+"</li></ul>"
-    flash.success = message(code: 'multi.upload.success', args: [listing])
-  }
+    if (successfulUploads) {
+      def listing = "<ul><li>"+successfulUploads.join('</li><li>')+"</li></ul>"
+      flash.success = message(code: 'multi.upload.success', args: [listing])
+    }
   
-  if (errorUploads) {
-    def listing = "<ul><li>"+errorUploads.join('</li><li>')+"</li></ul>"
-    flash.error = message(code: 'multi.upload.error', args: [listing])
-  }
-      redirect(action: "list") 
+    if (errorUploads) {
+      def listing = "<ul><li>"+errorUploads.join('</li><li>')+"</li></ul>"
+      flash.error = message(code: 'multi.upload.error', args: [listing])
+    }
+    redirect(action: "list") 
   }
 
   def show() {
@@ -162,6 +162,7 @@ class GaiacFileController {
     }
   }
 
+  @Secured(['ROLE_ADMIN'])
   def discover = {
     if (params.pathToDiscover) {
       def startingPoint = new File(params.pathToDiscover)
@@ -184,6 +185,8 @@ class GaiacFileController {
         }
       }
       flash.success = "Successfully discovered."
+      redirect action:'list'
+      return
     }
   }
 

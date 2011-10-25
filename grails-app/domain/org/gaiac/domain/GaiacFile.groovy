@@ -13,6 +13,10 @@ class GaiacFile {
     path blank:false, unique: false
   }
 
+  static mapping = {
+    cache true
+  }
+
   static searchable = {
     name boost: 2.0
   }
