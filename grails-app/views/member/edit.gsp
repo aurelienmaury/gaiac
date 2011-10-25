@@ -8,10 +8,7 @@
 	</head>
 	<body>
 		
-		<div id="edit-member" class="content " role="main">
-      <div class="page-header">
-			<h1><g:message code='members.label' default='Members' /></h1>
-			</div>
+		<div class="content">
 
 			<div class="row">
 			<div class="span16">

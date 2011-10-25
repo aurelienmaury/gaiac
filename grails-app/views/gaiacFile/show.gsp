@@ -4,15 +4,13 @@
 	</head>
 	<body>
 		<div class="content">
-			<div class="page-header">
-				<h1><g:message code='gaiacFile.label' default='GaiacFile' /></h1>
-			</div>
+			
 			<div class="row">
 				<div class="span16">
 			
 				<ul class="pills">
 					<li>
-						<g:link action="list"><g:message code="short.list.label" /></g:link>
+						<g:link action="list"><g:message code="short.browse.label" /></g:link>
 					</li>
 					<li>
 						<g:link action="create"><g:message code="short.upload.label" /></g:link>
