@@ -26,9 +26,20 @@ class GaiacFileController {
 
   def search() {
     params.max = Math.min(params.max ? params.int('max') : 10, 100)
+    def sort = params.sort
+    params.sort = null
+
     def response = GaiacFile.search("*${params.query}*", params)
+
+    def fileList = []
+    if (!sort) {
+      fileList = GaiacFile.getAll(response.results*.id)
+    } else {
+      params.sort = sort
+      fileList = GaiacFile.findAllByIdInList(response.results*.id, params)
+    }
     render view:'list', model: [  query: params.query, 
-                                  gaiacFileInstanceList: response.results, 
+                                  gaiacFileInstanceList: fileList, 
                                   gaiacFileInstanceTotal: response.total ]
   }
 
@@ -56,8 +67,9 @@ class GaiacFileController {
       def filePath = destDir.absolutePath + "/" + uploadedFile.originalFilename
       
       try {
-        uploadedFile.transferTo(new File(filePath))
-        def gaiacFileInstance = new GaiacFile(name:uploadedFile.originalFilename, path: filePath)
+        def onDiskFile = new File(filePath)
+        uploadedFile.transferTo(onDiskFile)
+        def gaiacFileInstance = new GaiacFile(name:uploadedFile.originalFilename, path: filePath, size: onDiskFile.size())
           
         if (gaiacFileInstance.save(flush: true)) {
           successfulUploads << gaiacFileInstance.name
@@ -181,6 +193,7 @@ class GaiacFileController {
           def register = new GaiacFile()
           register.name = current.name
           register.path = current.absolutePath
+          register.size = current.size()
           register.save()
         }
       }

@@ -1,6 +1,3 @@
-
-<%@ page import="org.gaiac.domain.GaiacFile"%>
-<!doctype html>
 <html>
 <head>
 	<meta name="layout" content="main">
@@ -52,9 +49,12 @@
 						<tr>
 
 							<g:sortableColumn property="name"
-								title="${message(code: 'gaiacFile.name.label', default: 'Name')}" />
+								title="${message(code: 'gaiacFile.name.label', default: 'Name')}" params="[query: query]"/>
 
-							<th></th>
+							<g:sortableColumn property="size" class="ctxt w2"
+								title="${message(code: 'gaiacFile.size.label', default: 'Size')}" params="[query: query]"/>
+
+							<th class="ctxt">Dl nb</th>
 
 							<th></th>
 						</tr>
@@ -67,10 +67,13 @@
 										${fieldValue(bean: gaiacFileInstance, field: "name")}
 									</g:link>
 								</td>
-								<td>
-									${fieldValue(bean: gaiacFileInstance, field: "downloaded")}
+								<td class="rtxt w2">
+									<display:fileSize value="${gaiacFileInstance.size}"/>
 								</td>
-								<td>
+								<td class="ctxt w2">
+									${gaiacFileInstance.downloads?gaiacFileInstance.downloads.size():'0'}
+								</td>
+								<td class="ctxt w2">
 										<g:link controller="dl" action="file" id="${gaiacFileInstance.id}">
 											<img src="${resource(dir:'images',file: 'download_16.png')}"/>
 										</g:link>
