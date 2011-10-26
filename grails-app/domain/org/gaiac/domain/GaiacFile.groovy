@@ -6,7 +6,13 @@ class GaiacFile {
 
   String path
 
-  int downloaded = 0
+  long size
+
+  Date dateCreated
+
+  Date lastUpdated
+
+  static hasMany = [downloads: DownloadTrace]
 
   static constraints = {
     name blank:false, unique: true
@@ -21,7 +27,7 @@ class GaiacFile {
     name boost: 2.0
   }
 
-  def completeDownload () {
-    GaiacFile.executeUpdate("update GaiacFile set downloaded = downloaded+1 where id=:id", [id: this.id])
+  private File concrete() {
+    new File(this.path)
   }
 }

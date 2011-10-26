@@ -6,9 +6,21 @@ class BootStrap {
     def init = { servletContext ->
       initRoles()
       initAccounts()
+      fillGaiacFileSizes()
     }
 
     def destroy = {
+    }
+
+    private void fillGaiacFileSizes() {
+      def emptySizeFiles = GaiacFile.findBySizeIsNull()
+      emptySizeFiles.each {
+        def pointsTo = it.concrete()
+        if (pointsTo.isFile()) {
+          it.size = pointsTo.size()
+          it.save()
+        }
+      }
     }
 
     private void initRoles() {

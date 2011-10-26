@@ -43,7 +43,8 @@ grails.resources.adhoc.patterns = ['/images/*', '/css/*', '/js/*', '/plugins/*']
 grails.resources.modules = {
   core {
   dependsOn 'jquery'
-    resource url:'/css/bootstrap.css'
+  resource url:'/css/bootstrap.css'
+  resource url:'/css/main.css'
   resource url:'/js/bootstrap-alerts.js'
   resource url:'/js/bootstrap-dropdown.js'
   }
