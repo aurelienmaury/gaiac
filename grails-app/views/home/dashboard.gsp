@@ -30,23 +30,30 @@
         
     <div class="row">
       <div class="span5">
-        <h2>Top 10</h2>
-        <p>
-        Etiam porta sem malesuada magna mollis euismod. Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit.
-        </p>
-      </div>
-      <div class="span6">
-        <h2>Top 10</h2>
-        <p>
-        Etiam porta sem malesuada magna mollis euismod. Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit.
-        </p>
+        <h2>Derniers ajouts</h2>
+        <ol>
+          <g:each var="file" in="${lastUploads}">
+            <li><g:link action="file" controller="dl" id="${file.id}"><display:labelCut max="36" value="${fieldValue(bean: file, field: 'name')}"/></g:link></li>
+          </g:each>
+        </ol>
       </div>
       <div class="span5">
-        <h2>Top 10</h2>
-        <p>
-        Etiam porta sem malesuada magna mollis euismod. Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit.
-        </p>
+        <h2>Plébiscités (tout)</h2>
+        <ol>
+          <g:each var="file" in="${topDlAllTime}">
+            <li><g:link action="file" controller="dl" id="${file.id}"><display:labelCut max="36" value="${fieldValue(bean: file, field: 'name')}"/></g:link></li>
+          </g:each>
+        </ol>
       </div>
+      <div class="span5">
+        <h2>Plébiscités (30 jours)</h2>
+        <ol>
+          <g:each var="file" in="${topDl30Days}">
+            <li><g:link action="file" controller="dl" id="${file.id}"><display:labelCut max="36" value="${fieldValue(bean: file, field: 'name')}"/></g:link></li>
+          </g:each>
+        </ol>
+      </div>
+      
     </div>
     
     
