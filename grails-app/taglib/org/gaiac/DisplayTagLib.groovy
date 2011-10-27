@@ -26,4 +26,16 @@ class DisplayTagLib {
       out << "${res} ${unit}"
     }
   }
+
+  def labelCut = { attrs, body ->
+    if (attrs.max && attrs.max.isInteger()) {
+      def max = new Integer(attrs.max) - 3
+      if (attrs.value.size() > max) {
+        def res = attrs.value.substring(0, max) + "..."
+        out << res
+      } else {
+        out << attrs.value
+      }
+    }
+  }
 }

@@ -54,9 +54,9 @@
 							<g:sortableColumn property="size" class="ctxt w2"
 								title="${message(code: 'gaiacFile.size.label', default: 'Size')}" params="[query: query]"/>
 
-							<th class="ctxt">Dl nb</th>
+							<th class="ctxt w2">Dl nb</th>
 
-							<th></th>
+							<th class="w2"></th>
 						</tr>
 					</thead>
 					<tbody>
@@ -67,13 +67,13 @@
 										${fieldValue(bean: gaiacFileInstance, field: "name")}
 									</g:link>
 								</td>
-								<td class="rtxt w2">
+								<td class="rtxt">
 									<display:fileSize value="${gaiacFileInstance.size}"/>
 								</td>
-								<td class="ctxt w2">
+								<td class="ctxt">
 									${gaiacFileInstance.downloads?gaiacFileInstance.downloads.size():'0'}
 								</td>
-								<td class="ctxt w2">
+								<td class="ctxt">
 										<g:link controller="dl" action="file" id="${gaiacFileInstance.id}">
 											<img src="${resource(dir:'images',file: 'download_16.png')}"/>
 										</g:link>

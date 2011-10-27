@@ -30,4 +30,32 @@ class GaiacFile {
   private File concrete() {
     new File(this.path)
   }
+
+  static namedQueries = {
+    topDlAllTime {
+      createAlias 'downloads', 'dls'
+      projections {
+        groupProperty "id"
+        count 'dls.id', 'dlnb'
+      }
+      order "dlnb", "desc"
+      maxResults(5)
+    }
+
+    topDlLimitBack { limitBack ->
+      createAlias 'downloads', 'dls'
+      projections {
+        groupProperty "id"
+        gt 'dls.downloadDate', limitBack
+        count 'dls.id', 'dlnb'
+      }
+      order "dlnb", "desc"
+      maxResults(5)
+    }
+
+    lastAdded {
+      order 'dateCreated', 'desc'
+      maxResults(5)
+    }
+  }
 }
