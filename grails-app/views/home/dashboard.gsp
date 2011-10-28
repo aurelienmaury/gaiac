@@ -29,7 +29,7 @@
     </div>
         
     <div class="row">
-      <div class="span5">
+      <div class="span5 offset1">
         <h2>Derniers ajouts</h2>
         <ol>
           <g:each var="file" in="${lastUploads}">
