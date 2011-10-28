@@ -5,6 +5,7 @@
 <body>
 	<div id="list-gaiacFile" class="content" role="main">
 		
+		<sec:ifAllGranted roles="ROLE_ADMIN">
 		<div class="row">
 			<div class="span16">
 				<ul class="pills">
@@ -12,17 +13,18 @@
 							<g:message code="short.browse.label" />
 						</g:link>
 					</li>
-					<sec:ifAllGranted roles="ROLE_ADMIN">
+					
 					<li><g:link action="create">
 							<g:message code="short.upload.label" default="Upload"/>
 						</g:link>
 					</li>
 					<li><g:link action="discover"><g:message code="short.discover.label" default="Discover"/></g:link>
 					</li>
-					</sec:ifAllGranted>
+					
 				</ul>
 			</div>
 		</div>
+		</sec:ifAllGranted>
 				
 		<div class="row">
 			<div class="span16">
@@ -63,9 +65,15 @@
 						<g:each in="${gaiacFileInstanceList}" status="i"
 							var="gaiacFileInstance">
 							<tr>
-								<td><g:link action="show" id="${gaiacFileInstance.id}">
-										${fieldValue(bean: gaiacFileInstance, field: "name")}
-									</g:link>
+								<td>
+									<sec:ifAllGranted roles="ROLE_ADMIN">
+										<g:link action="show" id="${gaiacFileInstance.id}">
+											${fieldValue(bean: gaiacFileInstance, field: "name")}
+										</g:link>
+									</sec:ifAllGranted>
+									<sec:ifAllGranted roles="ROLE_BASIC">
+											${fieldValue(bean: gaiacFileInstance, field: "name")}
+									</sec:ifAllGranted>
 								</td>
 								<td class="rtxt">
 									<display:fileSize value="${gaiacFileInstance.size}"/>
