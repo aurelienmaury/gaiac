@@ -18,7 +18,7 @@
 							<g:message code="short.upload.label" default="Upload"/>
 						</g:link>
 					</li>
-					<li><g:link action="discover"><g:message code="short.discover.label" default="Discover"/></g:link>
+					<li><g:link action="adjustSize">Correct size</g:link>
 					</li>
 					
 				</ul>

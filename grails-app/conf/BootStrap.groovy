@@ -13,7 +13,7 @@ class BootStrap {
     }
 
     private void fillGaiacFileSizes() {
-      def emptySizeFiles = GaiacFile.findBySizeIsNull()
+      def emptySizeFiles = GaiacFile.findAllBySizeIsNullOrSize(0)
       emptySizeFiles.each {
         def pointsTo = it.concrete()
         if (pointsTo.isFile()) {
