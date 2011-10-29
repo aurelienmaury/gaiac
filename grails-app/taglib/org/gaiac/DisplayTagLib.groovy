@@ -9,6 +9,7 @@ class DisplayTagLib {
   static def orderedMsgCodes = [ 'common.bytes.label',
                                 'common.kbytes.label',
                                 'common.mbytes.label',
+                                'common.gbytes.label',
                                 'common.tbytes.label',
                                 'common.pbytes.label' ]
 

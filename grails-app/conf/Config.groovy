@@ -114,6 +114,7 @@ gaiac.max.dl.per.user=4
 
 environments {
   preprod {
+    searchable.bulkIndexOnStartup = false
     grails.plugin.databasemigration.updateOnStart=true
     grails.plugin.databasemigration.updateOnStartFileNames=['changelog.groovy']
   }
