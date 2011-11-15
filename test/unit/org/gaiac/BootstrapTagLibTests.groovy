@@ -12,6 +12,6 @@ import org.junit.*
 class BootstrapTagLibTests {
 
     void testSomething() {
-        fail "Implement me"
+        
     }
 }

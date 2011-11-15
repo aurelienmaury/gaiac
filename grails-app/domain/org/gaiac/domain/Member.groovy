@@ -15,7 +15,7 @@ class Member {
 	Date lastUpdated
 
 	static constraints = {
-		email blank: false, unique: true, email: true
+		email blank: false, unique: true, email: true, maxSize: 100
 		password blank: false
 	}
 

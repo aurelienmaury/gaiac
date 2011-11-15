@@ -37,13 +37,14 @@ environments {
           password = "root"
           pooled = true
           properties {
-            minEvictableIdleTimeMillis=1800000
-            timeBetweenEvictionRunsMillis=1800000
-            numTestsPerEvictionRun=3
-            testOnBorrow=true
-            testWhileIdle=true
-            testOnReturn=true
-            validationQuery="SELECT 1"
+            maxActive = 20
+            maxIdle = 10
+            minIdle = 5
+            initialSize = 5
+            minEvictableIdleTimeMillis = 120000
+            timeBetweenEvictionRunsMillis = 120000
+            maxWait = 10000
+            validationQuery = "SELECT 1"
           }
         }
     }
@@ -56,14 +57,16 @@ environments {
           username = "gaiac"
           password = "fautpasledire"
           pooled = true
+
           properties {
-            minEvictableIdleTimeMillis=1800000
-            timeBetweenEvictionRunsMillis=1800000
-            numTestsPerEvictionRun=3
-            testOnBorrow=true
-            testWhileIdle=true
-            testOnReturn=true
-            validationQuery="SELECT 1"
+            maxActive = 20
+            maxIdle = 10
+            minIdle = 5
+            initialSize = 5
+            minEvictableIdleTimeMillis = 120000
+            timeBetweenEvictionRunsMillis = 120000
+            maxWait = 10000
+            validationQuery = "SELECT 1"
           }
         }
     }

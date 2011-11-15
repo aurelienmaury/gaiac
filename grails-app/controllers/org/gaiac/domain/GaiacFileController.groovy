@@ -32,12 +32,15 @@ class GaiacFileController {
     def response = GaiacFile.search("*${params.query}*", params)
 
     def fileList = []
-    if (!sort) {
-      fileList = GaiacFile.getAll(response.results*.id)
-    } else {
-      params.sort = sort
-      fileList = GaiacFile.findAllByIdInList(response.results*.id, params)
+    if (response.results) {
+      if (!sort) {
+        fileList = GaiacFile.getAll(response.results*.id)
+      } else {
+        params.sort = sort
+        fileList = GaiacFile.findAllByIdInList(response.results*.id, params)
+      }
     }
+    
     render view:'list', model: [  query: params.query, 
                                   gaiacFileInstanceList: fileList, 
                                   gaiacFileInstanceTotal: response.total ]

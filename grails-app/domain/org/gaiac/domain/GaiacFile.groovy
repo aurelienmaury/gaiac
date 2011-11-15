@@ -15,8 +15,8 @@ class GaiacFile {
   static hasMany = [downloads: DownloadTrace]
 
   static constraints = {
-    name blank:false, unique: true
-    path blank:false, unique: false
+    name blank:false, unique: true, maxSize: 255
+    path blank:false, unique: false, maxSize: 1024
   }
 
   static mapping = {
