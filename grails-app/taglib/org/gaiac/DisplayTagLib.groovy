@@ -17,6 +17,7 @@ class DisplayTagLib {
     if (attrs.value) {
       def res = attrs.value
       def i = 0
+      
       while (res > kilo) {
           res /= kilo
           i++

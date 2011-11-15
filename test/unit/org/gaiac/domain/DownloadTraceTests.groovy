@@ -12,6 +12,6 @@ import org.junit.*
 class DownloadTraceTests {
 
     void testSomething() {
-       fail "Implement me"
+       
     }
 }

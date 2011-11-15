@@ -18,6 +18,7 @@ class HomeController {
       def lastAddedList = GaiacFile.lastAdded().list()
 
       idToRetrieve = GaiacFile.topDlLimitBack(new Date() - 30).list().collect{ it[0] }
+      
       def topDl30List = []
       if (idToRetrieve && idToRetrieve.size() > 0) {
         topDl30List = GaiacFile.getAll(idToRetrieve)

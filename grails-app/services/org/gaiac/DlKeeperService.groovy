@@ -1,13 +1,11 @@
 package org.gaiac
 
 import java.util.concurrent.atomic.AtomicInteger
+import org.codehaus.groovy.grails.commons.ConfigurationHolder
 
 class DlKeeperService {
 
   static transactional = false
-
-  def grailsApplication
-
 
   def dlPerMemberId = [:]
 
@@ -15,10 +13,13 @@ class DlKeeperService {
     createIfNone(id)
 
     def current = dlPerMemberId."$id".incrementAndGet()
+
     if (current > maxPerUser()) {
       dlPerMemberId."$id".decrementAndGet()
+      println "current: ${current} > max: ${maxPerUser()}"
       return false
     } else {
+      println "current: ${current} <= max: ${maxPerUser()}"
       return true
     }
   }
@@ -33,7 +34,7 @@ class DlKeeperService {
   }
 
   private int maxPerUser() {
-    grailsApplication.config.gaiac.max.dl.per.user
+    ConfigurationHolder.config.gaiac.max.dl.per.user
   }
 
   private void createIfNone(id) {

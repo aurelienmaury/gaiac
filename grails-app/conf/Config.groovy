@@ -12,8 +12,6 @@ def envConfigKey = 'GAIAC_CONFIG'
 if (System.getenv(envConfigKey)) {
   println "External configuration defined: ${System.getenv(envConfigKey)}"
   grails.config.locations << "file:" + System.getenv(envConfigKey)
-} else {
-  println "No external configuration defined. Applying defaults."
 }
 
 
