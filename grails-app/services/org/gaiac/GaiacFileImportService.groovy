@@ -1,22 +1,22 @@
 package org.gaiac
 
 import org.codehaus.groovy.grails.commons.ConfigurationHolder
-//import java.lang.IllegalArgumenException
+import java.lang.IllegalArgumentException
 
 class GaiacFileImportService {
 
   static transactional = false
 
     def findAllFileToRegister(File startingDir) {
-/*
+
       if (!startingDir.isDirectory()) {
-        throw new IllegalArgumenException("Supplied File must be a directory")
+        throw new IllegalArgumentException("Supplied File must be a directory")
       }
-*/
+
       def matchingFiles = []
 
       startingDir.eachFileRecurse { current ->
-        if (current.isFile() && matchesAnyAllowed(current.getName())) {
+        if (current.isFile() && current.canRead() && matchesAnyAllowed(current.getName())) {
           matchingFiles << current
         }
       }
@@ -25,8 +25,9 @@ class GaiacFileImportService {
     }
 
     boolean matchesAnyAllowed(String filename) {      
-      ConfigurationHolder.config.gaiacFile.allowed.patterns.find {
+      def res = ConfigurationHolder.config.allowed.extensions.find {
         filename =~ "(?is:.*\\.${it}\$)"
       }
+      res
     }
 }
