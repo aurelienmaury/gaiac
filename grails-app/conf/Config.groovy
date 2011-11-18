@@ -110,7 +110,7 @@ grails.plugins.springsecurity.authority.className = 'org.gaiac.domain.Role'
 gaiac.repository.path="/tmp"
 gaiac.max.dl.per.user=4
 
-gaiacFile.allowed.extensions = ['jpg', 'avi', 'mov', 'pdf']
+allowed.extensions = ['jpg', 'avi', 'mov', 'pdf']
 
 
 environments {
