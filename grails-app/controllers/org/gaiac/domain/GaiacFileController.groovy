@@ -8,12 +8,10 @@ import org.springframework.dao.DataIntegrityViolationException
 class GaiacFileController {
 
   def grailsApplication
+
+  def gaiacFileImportService
   
   static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
-
-  def afterInterceptor = { model ->
-    model.activeTopbarSearch = true
-  }
 
   def index() {
       redirect(action: "list", params: params)
@@ -25,11 +23,17 @@ class GaiacFileController {
   }
 
   def search() {
+
+    if (!params.query) {
+      redirect action:'list'
+      return
+    }
+      
     params.max = Math.min(params.max ? params.int('max') : 10, 100)
     def sort = params.sort
     params.sort = null
 
-    def response = GaiacFile.search("*${params.query}*", params)
+    def response = GaiacFile.search("*${params.query}* OR ${params.query}", params)
 
     def fileList = []
     if (response.results) {
@@ -67,20 +71,25 @@ class GaiacFileController {
     }
       
     request.getFiles('uploadList').each { uploadedFile ->
-      def filePath = destDir.absolutePath + "/" + uploadedFile.originalFilename
-      
-      try {
-        def onDiskFile = new File(filePath)
-        uploadedFile.transferTo(onDiskFile)
-        def gaiacFileInstance = new GaiacFile(name:uploadedFile.originalFilename, path: filePath, size: onDiskFile.size())
-          
-        if (gaiacFileInstance.save(flush: true)) {
-          successfulUploads << gaiacFileInstance.name
-        } else {
-          errorUploads << gaiacFileInstance.name
+
+      if (gaiacFileImportService.matchesAnyAllowed(uploadedFile.originalFilename)) {
+        def filePath = destDir.absolutePath + "/" + uploadedFile.originalFilename
+        
+        try {
+          def onDiskFile = new File(filePath)
+          uploadedFile.transferTo(onDiskFile)
+          def gaiacFileInstance = new GaiacFile(name:uploadedFile.originalFilename, path: filePath, size: onDiskFile.size())
+            
+          if (gaiacFileInstance.save(flush: true)) {
+            successfulUploads << gaiacFileInstance.name
+          } else {
+            errorUploads << gaiacFileInstance.name
+          }
+        } catch (Exception e) {
+          log.error("Error uploading ${uploadedFile.originalFilename}", e)
+          errorUploads << uploadedFile.originalFilename
         }
-      } catch (Exception e) {
-        log.error("Error uploading ${uploadedFile.originalFilename}", e)
+      } else {
         errorUploads << uploadedFile.originalFilename
       }
     }
@@ -181,6 +190,7 @@ class GaiacFileController {
   def discover = {
     if (params.pathToDiscover) {
       def startingPoint = new File(params.pathToDiscover)
+      
       if (!startingPoint.exists()) {
         flash.error = "Path not found."
         return
@@ -191,15 +201,14 @@ class GaiacFileController {
         return
       }
 
-      startingPoint.eachFileRecurse { current ->
-        if (current.isFile()) {
-          def register = new GaiacFile()
-          register.name = current.name
-          register.path = current.absolutePath
-          register.size = current.size()
-          register.save()
-        }
+      gaiacFileImportService.findAllFileToRegister(startingPoint).each { current ->
+        def register = new GaiacFile()
+        register.name = current.name
+        register.path = current.absolutePath
+        register.size = current.size()
+        register.save()
       }
+      
       flash.success = "Successfully discovered."
       redirect action:'list'
       return

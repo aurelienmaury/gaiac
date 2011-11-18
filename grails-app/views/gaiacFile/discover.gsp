@@ -10,6 +10,8 @@
 		<div class="row">
 			<div class="span16">
 			
+				<h1>Discover</h1>
+
 				<flash:all/>
 				
 				<g:hasErrors bean="${gaiacFileInstance}">
@@ -22,22 +24,6 @@
 						</g:eachError>
 					</ul>
 				</g:hasErrors>
-
-				<ul class="pills">
-					<li><g:link action="list">
-							<g:message code="short.browse.label" />
-						</g:link>
-					</li>
-					<sec:ifAllGranted roles="ROLE_ADMIN">
-					<li><g:link action="create">
-							<g:message code="short.upload.label" default="Upload"/>
-						</g:link>
-					</li>
-					<li class="active"><a href="#"><g:message code="short.discover.label" default="Discover"/></a>
-					</li>
-					</sec:ifAllGranted>
-					
-				</ul>
 
 				<g:form action="discover">
 					<fieldset class="form">

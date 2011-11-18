@@ -18,12 +18,18 @@ class DisplayTagLib {
       def res = attrs.value
       def i = 0
       
-      while (res > kilo) {
+      while (res >= kilo) {
           res /= kilo
           i++
       }
 
-      res = new Double(res).round(2)
+      def roundedTo = 2
+      if (i == 0) {
+        res = new Double(res).round(roundedTo) as Integer
+      } else {
+        res = new Double(res).round(roundedTo)  
+      }
+      
       def unit = message(code: orderedMsgCodes[i])
       out << "${res} ${unit}"
     }
