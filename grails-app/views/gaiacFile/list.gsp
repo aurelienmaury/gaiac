@@ -1,46 +1,30 @@
 <html>
+
 <head>
 	<meta name="layout" content="main">
 </head>
+
 <body>
-	<div id="list-gaiacFile" class="content" role="main">
-		
-		<sec:ifAllGranted roles="ROLE_ADMIN">
-		<div class="row">
-			<div class="span16">
-				<ul class="pills">
-					<li class="active"><g:link action="list">
-							<g:message code="short.browse.label" />
-						</g:link>
-					</li>
-					
-					<li><g:link action="create">
-							<g:message code="short.upload.label" default="Upload"/>
-						</g:link>
-					</li>
-					<li><g:link action="adjustSize">Correct size</g:link>
-					</li>
-					
-				</ul>
-			</div>
-		</div>
-		</sec:ifAllGranted>
+	<div class="content">
 				
 		<div class="row">
 			<div class="span16">
-				<g:form action="search">
+				<g:form action="list">
 					<fieldset class="form">
 						<label for="query" class="btnPreField">
-							<g:actionSubmit class="btn primary" style="display:inline" action="search" value="${message(code: 'default.button.search.label', default: 'Search')}" />
+							<g:actionSubmit class="btn primary" 
+															style="display:inline" 
+															action="search" 
+															value="${message(code: 'default.button.search.label', default: 'Search')}" />
 						</label>
 						<div class="input">
 							<g:textField name="query" value="${query}" class="span11" id="searchField"/>
-						</div>		
-					</div>
+						</div>
 					</fieldset>
 				</g:form>
 			</div>
 		</div>
+
 		<div class="row">
 			<div class="span16">
 
@@ -49,21 +33,19 @@
 				<table class="zebra-striped">
 					<thead>
 						<tr>
-
 							<g:sortableColumn property="name"
-								title="${message(code: 'gaiacFile.name.label', default: 'Name')}" params="[query: query]"/>
-
-							<g:sortableColumn property="size" class="ctxt w2"
-								title="${message(code: 'gaiacFile.size.label', default: 'Size')}" params="[query: query]"/>
-
+																title="${message(code: 'gaiacFile.name.label', default: 'Name')}" 
+																params="[query: query]"/>
+							<g:sortableColumn property="size" 
+																class="ctxt w2"
+																title="${message(code: 'gaiacFile.size.label', default: 'Size')}" 
+																params="[query: query]"/>
 							<th class="ctxt w2">Dl nb</th>
-
 							<th class="w2"></th>
 						</tr>
 					</thead>
 					<tbody>
-						<g:each in="${gaiacFileInstanceList}" status="i"
-							var="gaiacFileInstance">
+						<g:each in="${gaiacFileInstanceList}" status="i" var="gaiacFileInstance">
 							<tr>
 								<td>
 									<sec:ifAllGranted roles="ROLE_ADMIN">
@@ -92,7 +74,6 @@
 				</table>
 				
 				<bs:paginate total="${gaiacFileInstanceTotal}" params="[query: query]"/>
-				
 			</div>
 		</div>
 	</div>

@@ -40,11 +40,11 @@ grails.resources.adhoc.patterns = ['/images/*', '/css/*', '/js/*', '/plugins/*']
 
 grails.resources.modules = {
   core {
-  dependsOn 'jquery'
-  resource url:'/css/bootstrap.css'
-  resource url:'/css/main.css'
-  resource url:'/js/bootstrap-alerts.js'
-  resource url:'/js/bootstrap-dropdown.js'
+    dependsOn 'jquery'
+    resource url:'/css/bootstrap.css'
+    resource url:'/css/main.css'
+    resource url:'/js/bootstrap-alerts.js'
+    resource url:'/js/bootstrap-dropdown.js'
   }
 }
 // The default codec used to encode data with ${}
@@ -109,6 +109,9 @@ grails.plugins.springsecurity.authority.className = 'org.gaiac.domain.Role'
 
 gaiac.repository.path="/tmp"
 gaiac.max.dl.per.user=4
+
+gaiacFile.allowed.extensions = ['jpg', 'avi', 'mov', 'pdf']
+
 
 environments {
   preprod {

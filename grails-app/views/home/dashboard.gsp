@@ -33,23 +33,37 @@
         <h2>Derniers ajouts</h2>
         <ol>
           <g:each var="file" in="${lastUploads}">
-            <li><g:link action="file" controller="dl" id="${file.id}"><display:labelCut max="36" value="${fieldValue(bean: file, field: 'name')}"/></g:link></li>
+            <li>
+              <g:link action="file" controller="dl" id="${file.id}" title="${fieldValue(bean: file, field: 'name')}">
+                <display:labelCut max="36" value="${fieldValue(bean: file, field: 'name')}"/>
+              </g:link>
+            </li>
           </g:each>
         </ol>
       </div>
+
       <div class="span5">
         <h2>Plébiscités (tout)</h2>
         <ol>
           <g:each var="file" in="${topDlAllTime}">
-            <li><g:link action="file" controller="dl" id="${file.id}"><display:labelCut max="36" value="${fieldValue(bean: file, field: 'name')}"/></g:link></li>
+            <li>
+              <g:link action="file" controller="dl" id="${file.id}" title="${fieldValue(bean: file, field: 'name')}">
+                <display:labelCut max="36" value="${fieldValue(bean: file, field: 'name')}"/>
+              </g:link>
+            </li>
           </g:each>
         </ol>
       </div>
+
       <div class="span5">
         <h2>Plébiscités (30 jours)</h2>
         <ol>
           <g:each var="file" in="${topDl30Days}">
-            <li><g:link action="file" controller="dl" id="${file.id}"><display:labelCut max="36" value="${fieldValue(bean: file, field: 'name')}"/></g:link></li>
+            <li>
+              <g:link action="file" controller="dl" id="${file.id}" title="${fieldValue(bean: file, field: 'name')}">
+                <display:labelCut max="36" value="${fieldValue(bean: file, field: 'name')}"/>
+              </g:link>
+            </li>
           </g:each>
         </ol>
       </div>

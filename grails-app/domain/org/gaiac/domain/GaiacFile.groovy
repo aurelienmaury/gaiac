@@ -24,7 +24,7 @@ class GaiacFile {
   }
 
   static searchable = {
-    name boost: 2.0
+    only = ['name']
   }
 
   private File concrete() {

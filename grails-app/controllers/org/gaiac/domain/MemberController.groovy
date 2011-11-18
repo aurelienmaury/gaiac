@@ -8,10 +8,6 @@ class MemberController {
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
-    def afterInterceptor = { model ->
-      model.activeTopbarMembers = true
-    }
-
     def index() {
         redirect(action: "list", params: params)
     }

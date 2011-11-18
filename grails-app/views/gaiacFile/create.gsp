@@ -10,6 +10,8 @@
 		<div class="row">
 			<div class="span16">
 			
+				<h1>Upload file</h1>
+
 				<flash:all/>
 				
 				<g:hasErrors bean="${gaiacFileInstance}">
@@ -21,18 +23,10 @@
 							</li>
 						</g:eachError>
 					</ul>
-				</g:hasErrors>
-
-				<ul class="pills">
-					<li><g:link action="list"><g:message code="short.browse.label"/></g:link></li>
+				</g:hasErrors>		
+				
+				<g:form action="create" enctype="multipart/form-data">
 					
-					<sec:ifAllGranted roles="ROLE_ADMIN">
-						<li class="active"><g:link action="create"><g:message code="short.upload.label" /></g:link></li>
-						<li><g:link action="discover"><g:message code="short.discover.label" default="Discover"/></g:link></li>
-					</sec:ifAllGranted>
-				</ul>
-
-				<g:form action="save" enctype="multipart/form-data">
 					<fieldset class="form">
 						<div class="clearfix">
 							<label for="actualFile"><g:message code="short.upload.label"/> </label>
@@ -41,11 +35,14 @@
 							</div>
 						</div>
 					</fieldset>
+
 					<fieldset class="actions">
-						<g:submitButton name="create" class="btn primary"
-							value="${message(code: 'short.upload.label')}" />
+						<g:actionSubmit class="btn primary"
+							value="${message(code: 'short.upload.label')}" action="save"/>
 					</fieldset>
+					
 				</g:form>
+
 			</div>
 		</div>
 	</div>
