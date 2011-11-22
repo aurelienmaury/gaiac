@@ -40,7 +40,7 @@
 						<g:actionSubmit class="btn primary"
 							value="${message(code: 'short.upload.label')}" action="save"/>
 					</fieldset>
-					
+
 				</g:form>
 
 			</div>
