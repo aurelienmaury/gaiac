@@ -18,10 +18,6 @@
 							<g:message code="short.browse.label" />
 						</g:link>
 					</li>
-					<li><g:link action="create">
-							<g:message code="short.upload.label" />
-						</g:link>
-					</li>
 					<li class="active"><a href="#">
 							<g:message code="short.edit.label" />
 						</a>

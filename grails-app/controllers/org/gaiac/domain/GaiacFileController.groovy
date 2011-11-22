@@ -7,20 +7,21 @@ import org.springframework.dao.DataIntegrityViolationException
 @Secured(["hasAnyRole('ROLE_BASIC','ROLE_ADMIN')"])
 class GaiacFileController {
 
-  def grailsApplication
+  static allowedMethods = [save: "POST", update: "POST", delete: "POST", search: "POST"]
 
   def gaiacFileImportService
   
-  static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
   def index() {
       redirect(action: "list", params: params)
   }
 
+
   def list() {
       params.max = Math.min(params.max ? params.int('max') : 10, 100)
       [gaiacFileInstanceList: GaiacFile.list(params), gaiacFileInstanceTotal: GaiacFile.count()]
   }
+
 
   def search() {
 
@@ -50,11 +51,12 @@ class GaiacFileController {
                                   gaiacFileInstanceTotal: response.total ]
   }
 
+
   def show() {
       def gaiacFileInstance = GaiacFile.get(params.id)
       if (!gaiacFileInstance) {
         flash.error = message(code: 'default.not.found.message', 
-                              args: [ message(code: 'gaiacFile.label', default: 'GaiacFile'), params.id ])
+                              args: [ msgGaiacFileLabel(), params.id ])
         redirect(action: "list")
         return
       }
@@ -62,11 +64,12 @@ class GaiacFileController {
       [ gaiacFileInstance: gaiacFileInstance ]
   }
 
+
   @Secured(['ROLE_ADMIN'])
   def edit() {
       def gaiacFileInstance = GaiacFile.get(params.id)
       if (!gaiacFileInstance) {
-          flash.error = message(code: 'default.not.found.message', args: [message(code: 'gaiacFile.label', default: 'GaiacFile'), params.id])
+          flash.error = message(code: 'default.not.found.message', args: [msgGaiacFileLabel(), params.id])
           redirect(action: "list")
           return
       }
@@ -74,44 +77,44 @@ class GaiacFileController {
       [gaiacFileInstance: gaiacFileInstance]
   }
 
+
   @Secured(['ROLE_ADMIN'])
   def update() {
 
     def gaiacFileInstance = GaiacFile.get(params.id)
+
     if (!gaiacFileInstance) {
-      flash.error = message(code: 'default.not.found.message', args: [message(code: 'gaiacFile.label', default: 'GaiacFile'), params.id])
-      redirect(action: "list")
-      return
+      flash.error = message(code: 'default.not.found.message', args: [msgGaiacFileLabel(), params.id])
+      return redirect(action: "list")
     }
 
     if (params.version) {
       def version = params.version.toLong()
       if (gaiacFileInstance.version > version) {
         gaiacFileInstance.errors.rejectValue("version", "default.optimistic.locking.failure",
-                    [message(code: 'gaiacFile.label', default: 'GaiacFile')] as Object[],
+                    [msgGaiacFileLabel()] as Object[],
                     "Another user has updated this GaiacFile while you were editing")
-        render(view: "edit", model: [gaiacFileInstance: gaiacFileInstance])
-        return
+        return render(view: "edit", model: [gaiacFileInstance: gaiacFileInstance])
       }
     }
 
     gaiacFileInstance.properties = params
 
     if (!gaiacFileInstance.save(flush: true)) {  
-      render(view: "edit", model: [gaiacFileInstance: gaiacFileInstance])
-      return
+      return render(view: "edit", model: [gaiacFileInstance: gaiacFileInstance])
     }
 
-    flash.success = message(code: 'default.updated.message', args: [message(code: 'gaiacFile.label', default: 'GaiacFile'), gaiacFileInstance.id])
+    flash.success = message(code: 'default.updated.message', args: [msgGaiacFileLabel(), gaiacFileInstance.id])
     redirect(action: "show", id: gaiacFileInstance.id)
   }
+
 
   @Secured(['ROLE_ADMIN'])
   def delete() {
 
     def gaiacFileInstance = GaiacFile.get(params.id)
     if (!gaiacFileInstance) {
-      flash.error = message(code: 'default.not.found.message', args: [message(code: 'gaiacFile.label', default: 'GaiacFile'), params.id])
+      flash.error = message(code: 'default.not.found.message', args: [msgGaiacFileLabel(), params.id])
       redirect(action: "list")
       return
     }
@@ -119,14 +122,20 @@ class GaiacFileController {
     try {
       new File(gaiacFileInstance.path).delete()  
       gaiacFileInstance.delete(flush: true)
-      flash.success = message(code: 'default.deleted.message', args: [message(code: 'gaiacFile.label', default: 'GaiacFile'), params.id])
+      flash.success = message(code: 'default.deleted.message', args: [msgGaiacFileLabel(), params.id])
       redirect(action: "list")
     }
     catch (DataIntegrityViolationException e) {
-      flash.error = message(code: 'default.not.deleted.message', args: [message(code: 'gaiacFile.label', default: 'GaiacFile'), params.id])
+      flash.error = message(code: 'default.not.deleted.message', args: [msgGaiacFileLabel(), params.id])
       redirect(action: "show", id: params.id)
     }
   }
+
+
+  private def msgGaiacFileLabel() {
+    message(code: 'gaiacFile.label', default: 'GaiacFile')
+  }
+
 
   @Secured(['ROLE_ADMIN'])
   def discover = {
@@ -143,20 +152,12 @@ class GaiacFileController {
         return
       }
 
-      gaiacFileImportService.findAllFileToRegister(startingPoint).each { current ->
-        def register = new GaiacFile()
-        register.name = current.name
-        register.path = current.absolutePath
-        register.size = current.size()
-        register.save()
-      }
+      gaiacFileImportService.importFrom(startingPoint)
       
       flash.success = "Successfully discovered."
+
       redirect action:'list'
       return
     }
   }
-
- 
-
 }
