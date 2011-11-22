@@ -46,6 +46,10 @@ grails.resources.modules = {
     resource url:'/js/bootstrap-alerts.js'
     resource url:'/js/bootstrap-dropdown.js'
   }
+
+  uploader {
+    resource url:'/js/jquery.ul.js'
+  }
 }
 // The default codec used to encode data with ${}
 grails.views.default.codec = "none" // none, html, base64

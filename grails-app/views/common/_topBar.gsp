@@ -23,7 +23,7 @@
 
             <ul class="dropdown-menu">
               <li><g:link controller='member'>Members</g:link></li>
-              <li><g:link controller='gaiacFile' action='create'>Upload</g:link></li>
+              <li><g:link controller='ul'>Upload</g:link></li>
               <li><g:link controller='gaiacFile' action='discover'>Discover</g:link></li>
             </ul>
 
