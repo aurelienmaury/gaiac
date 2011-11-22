@@ -1,5 +1,6 @@
 package org.gaiac
 
+import org.gaiac.domain.GaiacFile
 import org.codehaus.groovy.grails.commons.ConfigurationHolder
 import java.lang.IllegalArgumentException
 
@@ -22,6 +23,18 @@ class GaiacFileImportService {
       }
 
       matchingFiles
+    }
+
+    def importFrom(startingPoint) {
+
+      findAllFileToRegister(startingPoint).each { current ->
+        def creationParams = [
+          name: current.name,
+          path: current.absolutePath,
+          size: current.size()
+        ]
+        new GaiacFile(creationParams).save()
+      }
     }
 
     boolean matchesAnyAllowed(String filename) {      
