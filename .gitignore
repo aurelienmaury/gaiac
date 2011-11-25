@@ -4,3 +4,7 @@ target-eclipse
 .project
 .settings
 stacktrace.log
+*.iml
+*.ipr
+*.iws
+out

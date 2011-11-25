@@ -29,6 +29,19 @@
 							<g:textField name="name" required="" value="${gaiacFileInstance?.name}" class="disabled" disabled="true"/>
 						</div>
 					</div>
+
+					<div class="clearfix">
+						<label for="categories">
+							<g:message code="gaiacFile.categories.label" default="Categories" />
+						</label>
+						<div class="input">
+							<span class="uneditable-input">
+							<g:each in="${gaiacFileInstance?.categories}" var="cat">
+								${fieldValue(bean: cat, field: 'name')}
+							</g:each>
+							</span>
+						</div>
+					</div>
 				
 					<sec:ifAllGranted roles="ROLE_ADMIN">
 					<div class="clearfix">

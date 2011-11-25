@@ -1,5 +1,7 @@
 package org.gaiac.domain
 
+import  grails.gorm.DetachedCriteria 
+
 class GaiacFile {
 
   String name
@@ -8,11 +10,13 @@ class GaiacFile {
 
   long size
 
+  long downloadNumber
+
   Date dateCreated
 
   Date lastUpdated
 
-  static hasMany = [downloads: DownloadTrace]
+  static hasMany = [downloads: DownloadTrace, categories: Category]
 
   static constraints = {
     name blank:false, unique: true, maxSize: 255
@@ -58,4 +62,6 @@ class GaiacFile {
       maxResults(5)
     }
   }
+
+  
 }
