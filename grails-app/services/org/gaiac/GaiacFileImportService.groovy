@@ -1,46 +1,61 @@
 package org.gaiac
 
 import org.gaiac.domain.GaiacFile
-import org.codehaus.groovy.grails.commons.ConfigurationHolder
-import java.lang.IllegalArgumentException
 
 class GaiacFileImportService {
 
   static transactional = false
 
-    def findAllFileToRegister(File startingDir) {
+  def grailsApplication
 
-      if (!startingDir.isDirectory()) {
-        throw new IllegalArgumentException("Supplied File must be a directory")
-      }
-
-      def matchingFiles = []
-
-      startingDir.eachFileRecurse { current ->
-        if (current.isFile() && current.canRead() && matchesAnyAllowed(current.getName())) {
-          matchingFiles << current
-        }
-      }
-
-      matchingFiles
-    }
-
-    def importFrom(startingPoint) {
-
-      findAllFileToRegister(startingPoint).each { current ->
-        def creationParams = [
+  /**
+   *
+   * @param startingPoint
+   * @return
+   */
+  def importFrom(startingPoint) {
+    findAllFileToRegister(startingPoint).each { current ->
+      def creationParams = [
           name: current.name,
           path: current.absolutePath,
           size: current.size()
-        ]
-        new GaiacFile(creationParams).save()
-      }
+      ]
+      new GaiacFile(creationParams).save()
+    }
+  }
+
+  /**
+   *
+   * @param filename
+   * @return
+   */
+  boolean isImportAllowed(String filename) {
+    def res = grailsApplication.config.allowed.extensions.find {
+      filename =~ "(?is:.*\\.${it}\$)"
+    }
+    res ? true : false
+  }
+
+  /**
+   *
+   * @param startingDir
+   * @return
+   */
+  private def findAllFileToRegister(File startingDir) {
+    if (!startingDir) {
+      throw new IllegalArgumentException("Param 'startingDir' cannot be null")
     }
 
-    boolean matchesAnyAllowed(String filename) {      
-      def res = ConfigurationHolder.config.allowed.extensions.find {
-        filename =~ "(?is:.*\\.${it}\$)"
-      }
-      res
+    if (!startingDir.isDirectory()) {
+      throw new IllegalArgumentException("Param 'startingDir' must target a directory")
     }
+
+    def matchingFiles = []
+    startingDir.eachFileRecurse { current ->
+      if (current.isFile() && current.canRead() && isImportAllowed(current.getName())) {
+        matchingFiles << current
+      }
+    }
+    matchingFiles
+  }
 }

@@ -1,7 +1,5 @@
 package org.gaiac.domain
 
-import  grails.gorm.DetachedCriteria 
-
 class GaiacFile {
 
   String name
@@ -16,11 +14,21 @@ class GaiacFile {
 
   Date lastUpdated
 
-  static hasMany = [downloads: DownloadTrace, categories: Category]
+  static hasMany = [
+      downloads: DownloadTrace,
+      categories: Category
+  ]
 
   static constraints = {
-    name blank:false, unique: true, maxSize: 255
-    path blank:false, unique: false, maxSize: 1024
+    name(
+        blank: false,
+        unique: true,
+        maxSize: 255)
+
+    path(
+        blank: false,
+        unique: false,
+        maxSize: 1024)
   }
 
   static mapping = {
@@ -29,10 +37,6 @@ class GaiacFile {
 
   static searchable = {
     only = ['name']
-  }
-
-  private File concrete() {
-    new File(this.path)
   }
 
   static namedQueries = {
@@ -44,24 +48,25 @@ class GaiacFile {
       }
       order "dlnb", "desc"
       maxResults(5)
+      cache true
     }
 
     topDlLimitBack { limitBack ->
       createAlias 'downloads', 'dls'
       projections {
         groupProperty "id"
-        gt 'dls.downloadDate', limitBack
+        gt 'dls.dateCreated', limitBack
         count 'dls.id', 'dlnb'
       }
       order "dlnb", "desc"
       maxResults(5)
+      cache true
     }
 
     lastAdded {
       order 'dateCreated', 'desc'
       maxResults(5)
+      cache true
     }
   }
-
-  
 }

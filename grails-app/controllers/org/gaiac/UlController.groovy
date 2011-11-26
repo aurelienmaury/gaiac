@@ -5,74 +5,87 @@ import grails.converters.JSON
 import org.gaiac.domain.GaiacFile
 import java.text.SimpleDateFormat
 
-import static org.codehaus.groovy.grails.commons.ConfigurationHolder.config as conf
-
 @Secured(['ROLE_ADMIN'])
 class UlController {
-    
-    private static final String FORM_FILES_NAME = 'uploadList'
 
-    def gaiacFileImportService
+  private static final String FORM_FILES_NAME = 'uploadList'
 
-    def index() {
-    }
+  def grailsApplication
 
-    def upload() { 
+  def gaiacFileImportService
 
-      def destDir = getDestDir()
+  def dateFormatter = new SimpleDateFormat("yyyy-MM-dd")
 
-      request.getFiles(FORM_FILES_NAME).each { uploadedFile ->
-        
-        log.debug "Uploading: ${uploadedFile.originalFilename}"
-        
-        if (!gaiacFileImportService.matchesAnyAllowed(uploadedFile.originalFilename)) {
-          log.error "Upload failed: ${uploadedFile.originalFilename} has no allowed extensions"
-        } else {
+  def index() {
+  }
 
-          try {
-            def onDiskFile = transferToDir(uploadedFile, destDir)
-            def isSaved = createGaiacFileFor(onDiskFile)
-              
-            if (!isSaved) {
-              log.error "Upload failed: ${onDiskFile.name} - deleting file"
-              onDiskFile.delete()
-            }
+  def upload() {
 
-            log.debug "Upload succeed: ${onDiskFile.name}"
-          } catch (Exception e) {
-            log.error("Error uploading ${uploadedFile.originalFilename}", e)
-          }
+    def destDir = getDestDir()
+
+    request.getFiles(FORM_FILES_NAME).each { uploadedFile ->
+
+      log.debug "Uploading: ${uploadedFile.originalFilename}"
+
+      if (!gaiacFileImportService.isImportAllowed(uploadedFile.originalFilename)) {
+        log.error "Upload failed: ${uploadedFile.originalFilename} has no allowed extensions"
+      }
+
+      try {
+        def onDiskFile = transferToDir(uploadedFile, destDir)
+
+        if (!createGaiacFileFor(onDiskFile)) {
+          log.error "Upload failed: ${onDiskFile.name} - deleting file"
+          onDiskFile.delete()
         }
-      }
 
-      return render(text: [success:true] as JSON, contentType:'text/json')
+        log.debug "Upload succeed: ${onDiskFile.name}"
+      } catch (Exception e) {
+        log.error("Error uploading ${uploadedFile.originalFilename}", e)
+      }
     }
 
-    private createGaiacFileFor(onDiskFile) {
-      def creationParams = [
+    return render(text: [success: true] as JSON, contentType: 'text/json')
+  }
+
+  /**
+   *
+   * @param onDiskFile
+   * @return
+   */
+  private createGaiacFileFor(onDiskFile) {
+    def creationParams = [
         name: onDiskFile.name,
-        path: onDiskFile.absolutePath, 
+        path: onDiskFile.absolutePath,
         size: onDiskFile.size()
-      ]
+    ]
 
-      new GaiacFile(creationParams).save(flush: true)
-    }
+    new GaiacFile(creationParams).save(flush: true)
+  }
 
-    private transferToDir(file, destDir) {
-      def onDiskFile = new File(destDir.absolutePath + "/" + file.originalFilename)
-      file.transferTo(onDiskFile)
-      onDiskFile
-    }
+  /**
+   *
+   * @param file
+   * @param destDir
+   * @return
+   */
+  private transferToDir(file, destDir) {
+    def onDiskFile = new File(destDir.absolutePath + File.pathSeparator + file.originalFilename)
+    file.transferTo(onDiskFile)
+    onDiskFile
+  }
 
-    private File getDestDir() {
-      
-      def repoPath = conf.gaiac.repository.path
-      def today = Calendar.getInstance().getTime()
-      def sdf = new SimpleDateFormat("yyyy-MM-dd")
-      def destDir = new File(repoPath+"/"+sdf.format(today))
-      if (!destDir.exists()) {
-        destDir.mkdir()
-      }
-      destDir
+  /**
+   *
+   * @return
+   */
+  private File getDestDir() {
+    def repoPath = grailsApplication.config.gaiac.repository.path
+
+    def destDir = new File(repoPath + File.pathSeparator + dateFormatter.format(Calendar.getInstance().getTime()))
+    if (!destDir.exists()) {
+      destDir.mkdir()
     }
+    destDir
+  }
 }
