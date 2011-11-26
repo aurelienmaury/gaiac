@@ -41,7 +41,7 @@
                     <g:sortableColumn property="size"
                                       title="${message(code: 'gaiacFile.size.label', default: 'Size')}"
                                       params="[query: query]"
-                                      class="ctxt w2"/>
+                                      class="ctxt w2" />
 
                     <g:sortableColumn property="downloadNumber"
                                       title="${message(code: 'gaiacFile.downloadNumber.short.label', default: 'Dl Nb')}"

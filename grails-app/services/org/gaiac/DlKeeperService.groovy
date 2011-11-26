@@ -1,18 +1,23 @@
 package org.gaiac
 
 import java.util.concurrent.atomic.AtomicInteger
-import static org.codehaus.groovy.grails.commons.ConfigurationHolder.config as conf
 
 class DlKeeperService {
 
   static transactional = false
 
+  def grailsApplication
+
   def dlPerMemberId = [:]
 
-
+  /**
+   *
+   * @param id
+   * @return
+   */
   boolean startDl(id) {
     createIfNone(id)
-
+    log.debug "TEST"
     def current = dlPerMemberId."$id".incrementAndGet()
 
     if (current > maxPerUser()) {
@@ -25,7 +30,10 @@ class DlKeeperService {
     }
   }
 
-
+  /**
+   *
+   * @param id
+   */
   void finishDl(id) {
     createIfNone(id)
 
@@ -35,12 +43,18 @@ class DlKeeperService {
     }
   }
 
-
+  /**
+   *
+   * @return
+   */
   private int maxPerUser() {
-    conf.gaiac.max.dl.per.user
+    grailsApplication.config.gaiac.max.dl.per.user as int
   }
 
-
+  /**
+   *
+   * @param id
+   */
   private void createIfNone(id) {
     if (!dlPerMemberId."$id") {
       dlPerMemberId."$id" = new AtomicInteger()

@@ -4,7 +4,8 @@ class DownloadTrace {
 
   GaiacFile file
   Member member
-  Date downloadDate = new Date()
+
+  Date dateCreated
 
   static constraints = {
     file    nullable: false

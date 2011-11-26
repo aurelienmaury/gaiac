@@ -7,7 +7,7 @@
     <span class="required-indicator">*</span>
   </label>
   <div class="input">
-    <g:textField name="email" required="" value="${categoryInstance?.name}"/>
+    <g:textField name="name" required="" value="${categoryInstance?.name}"/>
   </div>
 </div>
 

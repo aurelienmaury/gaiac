@@ -10,27 +10,27 @@ grails.config.locations = []
 
 def envConfigKey = 'GAIAC_CONFIG'
 if (System.getenv(envConfigKey)) {
-  println "External configuration defined: ${System.getenv(envConfigKey)}"
-  grails.config.locations << "file:" + System.getenv(envConfigKey)
+    println "External configuration defined: ${System.getenv(envConfigKey)}"
+    grails.config.locations << "file:" + System.getenv(envConfigKey)
 }
 
 
 grails.project.groupId = appName // change this to alter the default package name and Maven publishing destination
 grails.mime.file.extensions = true // enables the parsing of file extensions from URLs into the request format
 grails.mime.use.accept.header = false
-grails.mime.types = [ html: ['text/html','application/xhtml+xml'],
-                      xml: ['text/xml', 'application/xml'],
-                      text: 'text/plain',
-                      js: 'text/javascript',
-                      rss: 'application/rss+xml',
-                      atom: 'application/atom+xml',
-                      css: 'text/css',
-                      csv: 'text/csv',
-                      all: '*/*',
-                      json: ['application/json','text/json'],
-                      form: 'application/x-www-form-urlencoded',
-                      multipartForm: 'multipart/form-data'
-                    ]
+grails.mime.types = [html: ['text/html', 'application/xhtml+xml'],
+        xml: ['text/xml', 'application/xml'],
+        text: 'text/plain',
+        js: 'text/javascript',
+        rss: 'application/rss+xml',
+        atom: 'application/atom+xml',
+        css: 'text/css',
+        csv: 'text/csv',
+        all: '*/*',
+        json: ['application/json', 'text/json'],
+        form: 'application/x-www-form-urlencoded',
+        multipartForm: 'multipart/form-data'
+]
 
 // URL Mapping Cache Max Size, defaults to 5000
 //grails.urlmapping.cache.maxsize = 1000
@@ -39,17 +39,17 @@ grails.mime.types = [ html: ['text/html','application/xhtml+xml'],
 grails.resources.adhoc.patterns = ['/images/*', '/css/*', '/js/*', '/plugins/*']
 
 grails.resources.modules = {
-  core {
-    dependsOn 'jquery'
-    resource url:'/css/bootstrap.css'
-    resource url:'/css/main.css'
-    resource url:'/js/bootstrap-alerts.js'
-    resource url:'/js/bootstrap-dropdown.js'
-  }
+    core {
+        dependsOn 'jquery'
+        resource url: '/css/bootstrap.css'
+        resource url: '/css/main.css'
+        resource url: '/js/bootstrap-alerts.js'
+        resource url: '/js/bootstrap-dropdown.js'
+    }
 
-  uploader {
-    resource url:'/js/jquery.ul.js'
-  }
+    uploader {
+        resource url: '/js/jquery.ul.js'
+    }
 }
 // The default codec used to encode data with ${}
 grails.views.default.codec = "none" // none, html, base64
@@ -67,7 +67,7 @@ grails.enable.native2ascii = true
 // packages to include in Spring bean scanning
 grails.spring.bean.packages = []
 // whether to disable processing of multi part requests
-grails.web.disable.multipart=false
+grails.web.disable.multipart = false
 
 // request parameters to mask when logging exceptions
 grails.exceptionresolver.params.exclude = ['password']
@@ -87,22 +87,23 @@ gaiac.log.pattern = '%-5p [%c{2}] %m%n'
 // log4j configuration
 log4j = {
     appenders {
-        console name:'stdout', layout:pattern(conversionPattern: gaiac.log.pattern)
+        console name: 'stdout', layout: pattern(conversionPattern: gaiac.log.pattern)
     }
 
     error 'org.codehaus.groovy.grails.web.servlet',  //  controllers
-          'org.codehaus.groovy.grails.web.pages', //  GSP
-          'org.codehaus.groovy.grails.web.sitemesh', //  layouts
-          'org.codehaus.groovy.grails.web.mapping.filter', // URL mapping
-          'org.codehaus.groovy.grails.web.mapping', // URL mapping
-          'org.codehaus.groovy.grails.commons', // core / classloading
-          'org.codehaus.groovy.grails.plugins', // plugins
-          'org.codehaus.groovy.grails.orm.hibernate', // hibernate integration
-          'org.springframework',
-          'org.hibernate',
-          'net.sf.ehcache.hibernate'
+            'org.codehaus.groovy.grails.web.pages', //  GSP
+            'org.codehaus.groovy.grails.web.sitemesh', //  layouts
+            'org.codehaus.groovy.grails.web.mapping.filter', // URL mapping
+            'org.codehaus.groovy.grails.web.mapping', // URL mapping
+            'org.codehaus.groovy.grails.commons', // core / classloading
+            'org.codehaus.groovy.grails.plugins', // plugins
+            'org.codehaus.groovy.grails.orm.hibernate', // hibernate integration
+            'org.springframework',
+            'org.hibernate',
+            'net.sf.ehcache.hibernate'
 
-    debug 'grails.app.controllers'
+    debug 'grails.app.controllers',
+            'org.gaiac'
 }
 
 // Added by the Spring Security Core plugin:
@@ -111,21 +112,25 @@ grails.plugins.springsecurity.userLookup.usernamePropertyName = 'email'
 grails.plugins.springsecurity.userLookup.authorityJoinClassName = 'org.gaiac.domain.MemberRole'
 grails.plugins.springsecurity.authority.className = 'org.gaiac.domain.Role'
 
-gaiac.repository.path="/tmp"
-gaiac.max.dl.per.user=4
+environments {
+    preprod {
+        searchable.bulkIndexOnStartup = false
+        grails.plugin.databasemigration.updateOnStart = true
+        grails.plugin.databasemigration.updateOnStartFileNames = ['changelog.groovy']
+    }
+
+    production {
+        grails.plugin.databasemigration.updateOnStart = true
+        grails.plugin.databasemigration.updateOnStartFileNames = ['changelog.groovy']
+    }
+}
+
+
+// meant to be overriden by instance config file
+
+gaiac.repository.path = "/tmp"
+gaiac.max.dl.per.user = 4
 
 allowed.extensions = ['jpg', 'avi', 'mov', 'pdf']
 
 
-environments {
-  preprod {
-    searchable.bulkIndexOnStartup = false
-    grails.plugin.databasemigration.updateOnStart=true
-    grails.plugin.databasemigration.updateOnStartFileNames=['changelog.groovy']
-  }
-
-  production {
-    grails.plugin.databasemigration.updateOnStart=true
-    grails.plugin.databasemigration.updateOnStartFileNames=['changelog.groovy']
-  }
-}

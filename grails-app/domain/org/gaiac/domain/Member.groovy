@@ -2,42 +2,49 @@ package org.gaiac.domain
 
 class Member {
 
-	transient springSecurityService
+  transient springSecurityService
 
-	String email
-	String password
-	boolean enabled
-	boolean accountExpired
-	boolean accountLocked
-	boolean passwordExpired
-	
-	Date dateCreated
-	Date lastUpdated
+  String email
+  String password
+  boolean enabled
+  boolean accountExpired
+  boolean accountLocked
+  boolean passwordExpired
 
-	static constraints = {
-		email blank: false, unique: true, email: true, maxSize: 100
-		password blank: false
-	}
+  Date dateCreated
+  Date lastUpdated
 
-	static mapping = {
-		password column: '`password`'
-	}
+  static constraints = {
+    email(
+        blank: false,
+        unique: true,
+        email: true,
+        maxSize: 100)
 
-	Set<Role> getAuthorities() {
-		MemberRole.findAllByMember(this).collect { it.role } as Set
-	}
+    password(
+        blank: false)
+  }
 
-	def beforeInsert() {
-		encodePassword()
-	}
+  static mapping = {
+    password(
+        column: '`password`')
+  }
 
-	def beforeUpdate() {
-		if (isDirty('password')) {
-			encodePassword()
-		}
-	}
+  Set<Role> getAuthorities() {
+    MemberRole.findAllByMember(this).collect { it.role } as Set
+  }
 
-	protected void encodePassword() {
-		password = springSecurityService.encodePassword(password)
-	}
+  def beforeInsert() {
+    encodePassword()
+  }
+
+  def beforeUpdate() {
+    if (isDirty('password')) {
+      encodePassword()
+    }
+  }
+
+  private void encodePassword() {
+    password = springSecurityService.encodePassword(password)
+  }
 }
