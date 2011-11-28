@@ -10,6 +10,8 @@ class GaiacFileController {
 
   def gaiacFileImportService
 
+  def searchableService
+
   def index() {
     redirect(action: "list", params: params)
   }
@@ -32,12 +34,29 @@ class GaiacFileController {
     }
 
     params.max = Math.min(params.max ? params.int('max') : 10, 100)
+    String query = "*${params.query}* OR ${params.query}"
+    def response = searchableService.search(query, [reload: true])
 
-    def response = GaiacFile.search("*${params.query}* OR ${params.query}")
 
     def fileList = []
     if (response.results) {
-      fileList = GaiacFile.findAllByIdInList(response.results*.id, params)
+      def gaiacFiles = response.results.findAll { it instanceof GaiacFile }
+      def indexedCategories = response.results.findAll { it instanceof Category }
+
+      log.debug "RESULTS : ${indexedCategories}"
+      def allGaiacFileIds = []
+
+      allGaiacFileIds << gaiacFiles*.id
+
+      if (indexedCategories) {
+        def tmpRes = GaiacFile.findByCategoryIdIn(indexedCategories*.id).list()
+        allGaiacFileIds << tmpRes*.id
+      }
+
+      log.debug("fields ids : ${allGaiacFileIds}")
+
+      fileList = GaiacFile.findAllByIdInList(allGaiacFileIds.flatten(), params)
+
       log.debug "GaiacFile list : ${fileList.size()}"
     }
 
