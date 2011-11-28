@@ -63,6 +63,13 @@ class GaiacFile {
       cache true
     }
 
+    findByCategoryIdIn { catIdList ->
+      categories {
+        'id' in catIdList
+      }
+      cache true
+    }
+
     lastAdded {
       order 'dateCreated', 'desc'
       maxResults(5)
