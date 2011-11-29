@@ -43,7 +43,6 @@ class GaiacFileController {
       def gaiacFiles = response.results.findAll { it instanceof GaiacFile }
       def indexedCategories = response.results.findAll { it instanceof Category }
 
-      log.debug "RESULTS : ${indexedCategories}"
       def allGaiacFileIds = []
 
       allGaiacFileIds << gaiacFiles*.id
