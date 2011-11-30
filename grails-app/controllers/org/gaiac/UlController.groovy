@@ -70,7 +70,7 @@ class UlController {
    * @return
    */
   private transferToDir(file, destDir) {
-    def onDiskFile = new File(destDir.absolutePath + File.pathSeparator + file.originalFilename)
+    def onDiskFile = new File(destDir.absolutePath + File.separatorChar + file.originalFilename)
     file.transferTo(onDiskFile)
     onDiskFile
   }
@@ -82,7 +82,7 @@ class UlController {
   private File getDestDir() {
     def repoPath = grailsApplication.config.gaiac.repository.path
 
-    def destDir = new File(repoPath + File.pathSeparator + dateFormatter.format(Calendar.getInstance().getTime()))
+    def destDir = new File(repoPath + File.separatorChar + dateFormatter.format(Calendar.getInstance().getTime()))
     if (!destDir.exists()) {
       destDir.mkdir()
     }
