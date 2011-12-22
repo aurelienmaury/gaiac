@@ -45,7 +45,8 @@
             </table>
 
             <div class="pagination">
-                <g:paginate total="${categoryInstanceTotal}"/>
+                <bs:paginate total="${categoryInstanceTotal}" params="[query: query]"/>
+
             </div>
         </div>
     </div>

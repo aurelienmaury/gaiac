@@ -4,6 +4,9 @@ import grails.plugins.springsecurity.Secured
 import grails.converters.JSON
 import org.gaiac.domain.GaiacFile
 import java.text.SimpleDateFormat
+import org.gaiac.domain.Member
+import org.gaiac.domain.MemberRole
+import org.gaiac.domain.Role
 
 @Secured(['ROLE_ADMIN'])
 class UlController {
@@ -40,6 +43,15 @@ class UlController {
         }
 
         log.debug "Upload succeed: ${onDiskFile.name}"
+
+        Member.getAllAdmins().each { adminMember ->
+          mailService.sendMail {
+            to adminMember.email
+            from "noreply@gaiac.org"
+            subject "[GAIAC] New file uploaded : ${onDiskFile.name}"
+            body "A new file has been uploaded : ${onDiskFile.name} on your Gaïac instance."
+          }
+        }
       } catch (Exception e) {
         log.error("Error uploading ${uploadedFile.originalFilename}", e)
       }

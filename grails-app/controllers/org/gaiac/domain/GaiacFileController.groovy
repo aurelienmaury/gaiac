@@ -13,6 +13,7 @@ class GaiacFileController {
   def searchableService
 
   def index() {
+    log.debug "test"
     redirect(action: "list", params: params)
   }
 
@@ -137,6 +138,33 @@ class GaiacFileController {
       new File(gaiacFileInstance.path).delete()
       gaiacFileInstance.delete(flush: true)
       flash.success = message(code: 'default.deleted.message', args: [msgGaiacFileLabel(), params.id])
+      redirect(action: "list")
+    }
+    catch (DataIntegrityViolationException e) {
+      flash.error = message(code: 'default.not.deleted.message', args: [msgGaiacFileLabel(), params.id])
+      redirect(action: "show", id: params.id)
+    }
+  }
+
+  @Secured(['ROLE_ADMIN'])
+  def deleteAll() {
+
+    log.debug "idList = ${params.idList}"
+    def allId = [] << params.idList
+    allId = allId.flatten()
+    def gaiacFileInstanceList = GaiacFile.getAll(allId)
+    if (!gaiacFileInstanceList) {
+      flash.error = message(code: 'default.not.found.message', args: [msgGaiacFileLabel(), params.idList])
+      redirect(action: "list")
+      return
+    }
+
+    try {
+      gaiacFileInstanceList.each { gaiacFileInstance ->
+        new File(gaiacFileInstance.path).delete()
+        gaiacFileInstance.delete(flush: true)
+      }
+      flash.success = message(code: 'default.deleted.message', args: [msgGaiacFileLabel(), allId])
       redirect(action: "list")
     }
     catch (DataIntegrityViolationException e) {

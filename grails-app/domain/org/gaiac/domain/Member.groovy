@@ -29,6 +29,14 @@ class Member {
     password(
         column: '`password`')
   }
+  
+  static Set<Member> getAllAdmins() {
+    Role adminRole = Role.findByAuthority('ROLE_ADMIN')
+    def allLinks = MemberRole.findAllByRole(adminRole)
+    allLinks.collect {
+      it.member
+    }
+  }
 
   Set<Role> getAuthorities() {
     MemberRole.findAllByMember(this).collect { it.role } as Set

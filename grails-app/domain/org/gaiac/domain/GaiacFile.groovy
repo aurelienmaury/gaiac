@@ -6,6 +6,8 @@ class GaiacFile {
 
   String path
 
+  String exturl
+
   long size
 
   long downloadNumber
@@ -29,6 +31,12 @@ class GaiacFile {
         blank: false,
         unique: false,
         maxSize: 1024)
+
+    exturl(
+        blank: true,
+        url: true,
+        maxSize: 1024,
+    nullable: true)
   }
 
   static mapping = {
