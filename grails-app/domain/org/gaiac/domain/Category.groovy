@@ -23,5 +23,6 @@ class Category {
 
   static searchable = {
     only = ['name']
+    spellCheck 'include'
   }
 }

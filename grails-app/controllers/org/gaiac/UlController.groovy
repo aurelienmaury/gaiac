@@ -17,7 +17,9 @@ class UlController {
 
   def gaiacFileImportService
 
-  def dateFormatter = new SimpleDateFormat("yyyy-MM-dd")
+  def mailService
+
+  static final def dateFormatter = new SimpleDateFormat("yyyy-MM-dd")
 
   def index() {
   }
