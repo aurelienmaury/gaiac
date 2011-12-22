@@ -19,12 +19,8 @@
 
 <g:render template="/common/topBar"/>
 
-<div class="container">
-    <div class="content">
-
+<div class="container content">
         <g:layoutBody/>
-
-    </div>
 </div>
 
 <r:layoutResources/>

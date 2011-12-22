@@ -25,7 +25,7 @@
     </div>
 </div>
 
-<sec:ifAllGranted roles="ADMIN">
+<sec:ifAllGranted roles="ROLE_ADMIN">
 
     <div class="clearfix">
         <label for="name">
@@ -41,6 +41,18 @@
                          disabled="true"/>
         </div>
     </div>
+
+  <div class="clearfix">
+    <label for="exturl">
+      <g:message code="gaiacFile.exturl.label"
+                 default="External URL"/>
+    </label>
+
+    <div class="input">
+      <g:textField name="exturl"
+                   value="${gaiacFileInstance?.exturl}"/>
+    </div>
+  </div>
 
 </sec:ifAllGranted>
 

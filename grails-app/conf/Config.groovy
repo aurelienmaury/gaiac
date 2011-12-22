@@ -48,6 +48,8 @@ grails.resources.modules = {
   }
 
   uploader {
+    resource url: '/css/jquery-ui-1.8.16.custom.css'
+    resource url: '/js/jquery-ui-1.8.16.custom.min.js'
     resource url: '/js/jquery.ul.js'
   }
 }
@@ -131,5 +133,22 @@ gaiac.repository.path = "/tmp"
 gaiac.max.dl.per.user = 4
 
 allowed.extensions = ['jpg', 'avi', 'mov', 'pdf', 'mkv', 'divx',
-                      'png', 'jpeg', 'gif', 'txt', 'zip', 'rar', 'r[0-9]*',
-                      'xls', 'doc', 'docx']
+    'png', 'jpeg', 'gif', 'txt', 'zip', 'rar', 'r[0-9]*',
+    'xls', 'doc', 'docx']
+
+/*
+  Sample mail plugin configuration for GMail
+ -----
+grails {
+mail {
+host = "smtp.gmail.com"
+port = 465
+username = ""
+password = ""
+props = ["mail.smtp.auth": "true",
+    "mail.smtp.socketFactory.port": "465",
+    "mail.smtp.socketFactory.class": "javax.net.ssl.SSLSocketFactory",
+    "mail.smtp.socketFactory.fallback": "false"]
+}
+}
+*/

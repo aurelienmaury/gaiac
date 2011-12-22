@@ -51,7 +51,10 @@
 
         $nameSpan = $('<span>').attr('id', 'ulFileName'+i).html(f.name);
         $progressSpan = $('<span>').attr('id', 'ulFileProgress'+i);
-        $fileDiv = $('<div>').addClass('ulFile').append($nameSpan).append($progressSpan);
+        $progressDiv = $('<div>').attr('id', 'progressbar'+i);
+
+
+        $fileDiv = $('<div>').addClass('ulFile').append($nameSpan).append($progressSpan).append($progressDiv);
 
         $('#ulList').prepend($fileDiv);
       }
@@ -68,6 +71,8 @@
       xhr.upload.addEventListener('progress', function(evt) {
         var percentComplete = Math.round(100 * evt.loaded / evt.total);
         $('#ulFileProgress'+ulNum).html('- '+percentComplete+' %');
+        $('#progressbar'+ulNum).progressbar({value: percentComplete});
+
       }, false);
 
       xhr.open('POST', settings.url, true);
@@ -83,7 +88,7 @@
 
     uploaded : function(resp) { // Default callback
       console.log(resp);
-    },
+    }
   };
 
   $.fn.uploadify = function(method) {

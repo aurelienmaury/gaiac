@@ -13,6 +13,7 @@ class Category {
 
     description(
         unique: false,
+        nullable: true,
         maxSize: 1024)
   }
 
