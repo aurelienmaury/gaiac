@@ -54,7 +54,8 @@
                               params="[query: query]"
                               class="ctxt w1"/>
 
-            <th class="w1"></th>
+            <th class="w0"></th>
+            <th class="w0"></th>
             <sec:ifAllGranted roles="ROLE_ADMIN">
               <th class="w2 ctxt">
                 <g:actionSubmit value="DeleteAll"
@@ -73,9 +74,9 @@
                 <sec:ifAllGranted roles="ROLE_ADMIN">
 
                   <g:link action="edit"
-                          id="${gaiacFileInstance.id}">
+                          id="${gaiacFileInstance.id}" title="${fieldValue(bean: gaiacFileInstance, field: "name")}">
                     <display:labelCut value="${fieldValue(bean: gaiacFileInstance, field: "name")}"
-                                      max="80"/>
+                                      max="60"/>
                   </g:link>
 
                 </sec:ifAllGranted>
@@ -83,9 +84,9 @@
                 <sec:ifAllGranted roles="ROLE_BASIC">
 
                   <g:link action="show"
-                          id="${gaiacFileInstance.id}">
+                          id="${gaiacFileInstance.id}" title="${fieldValue(bean: gaiacFileInstance, field: "name")}">
                     <display:labelCut value="${fieldValue(bean: gaiacFileInstance, field: "name")}"
-                                      max="80"/>
+                                      max="60"/>
                   </g:link>
 
                 </sec:ifAllGranted>
@@ -103,6 +104,14 @@
 
               <td class="ctxt">
                 ${gaiacFileInstance.downloadNumber}
+              </td>
+
+              <td class="ctxt">
+                <g:if test="${gaiacFileInstance.exturl}">
+                  <g:link url="${gaiacFileInstance.exturl}">
+                    <img src="${resource(dir: 'images', file: 'internet_16.png')}"/>
+                  </g:link>
+                </g:if>
               </td>
 
               <td class="ctxt">

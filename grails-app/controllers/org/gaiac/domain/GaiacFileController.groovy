@@ -35,8 +35,12 @@ class GaiacFileController {
     }
 
     params.max = Math.min(params.max ? params.int('max') : 10, 100)
-    String query = "*${params.query}* OR ${params.query}"
-    def response = searchableService.search(query, [reload: true])
+    
+    String forgedQuery = params.query.split(' ').collect {"(*${it}* OR *${it} OR ${it}*)"}.join(" AND ")
+    
+    
+
+    def response = GaiacFile.search(forgedQuery , [reload: true])
 
 
     def fileList = []

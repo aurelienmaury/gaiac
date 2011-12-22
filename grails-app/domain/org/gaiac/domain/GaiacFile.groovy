@@ -45,6 +45,7 @@ class GaiacFile {
 
   static searchable = {
     only = ['name']
+    spellCheck 'include'
   }
 
   static namedQueries = {
