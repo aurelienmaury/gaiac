@@ -23,52 +23,46 @@ class GaiacFileController {
 
     def res = GaiacFile.list(params)
 
-    [gaiacFileInstanceList: res, gaiacFileInstanceTotal: GaiacFile.count()]
+    [gaiacFileInstanceList: res, gaiacFileInstanceTotal: GaiacFile.count(), categories: Category.list(order: 'name')]
   }
 
 
   def search() {
-
-    if (!params.query) {
-      redirect action: 'list'
-      return
+    if (!(params.query || params.selectedCat)) {
+      return redirect(action: 'list')
     }
 
     params.max = Math.min(params.max ? params.int('max') : 10, 100)
-    
+
     String forgedQuery = params.query.split(' ').collect {"(*${it}* OR *${it} OR ${it}*)"}.join(" AND ")
-    
-    
+    def indexResponse = GaiacFile.search(forgedQuery)
+    def fileList = GaiacFile.findAllByIdInList(indexResponse.results*.id, params)
 
-    def response = GaiacFile.search(forgedQuery , [reload: true])
+    def selectedCat = [] << params.selectedCat
+    selectedCat = selectedCat.flatten()
+
+    if (params.selectedCat) {
+      def matchingCat
 
 
-    def fileList = []
-    if (response.results) {
-      def gaiacFiles = response.results.findAll { it instanceof GaiacFile }
-      def indexedCategories = response.results.findAll { it instanceof Category }
+      log.debug "selected cat = ${selectedCat}"
+      def fileByCat = GaiacFile.where {
+        categories.id in selectedCat.collect {it as Long}
+      }.list()
 
-      def allGaiacFileIds = []
-
-      allGaiacFileIds << gaiacFiles*.id
-
-      if (indexedCategories) {
-        def tmpRes = GaiacFile.findByCategoryIdIn(indexedCategories*.id).list()
-        allGaiacFileIds << tmpRes*.id
-      }
-
-      log.debug("fields ids : ${allGaiacFileIds}")
-
-      fileList = GaiacFile.findAllByIdInList(allGaiacFileIds.flatten(), params)
-
-      log.debug "GaiacFile list : ${fileList.size()}"
+      fileList = fileList.intersect(fileByCat)
     }
 
-    render view: 'list', model: [query: params.query,
-        gaiacFileInstanceList: fileList,
-        gaiacFileInstanceTotal: response.total]
-  }
 
+
+    render(view: 'list',
+        model: [query: params.query,
+            gaiacFileInstanceList: fileList,
+            gaiacFileInstanceTotal: indexResponse.total,
+            categories: Category.list(order: 'name'),
+            selectedCat: selectedCat]
+    )
+  }
 
   def show() {
     def gaiacFileInstance = GaiacFile.get(params.id)

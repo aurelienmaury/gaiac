@@ -11,15 +11,23 @@
     <div class="span16">
       <g:form action="list" name="actionAdm">
         <fieldset class="form">
-          <label for="query" class="btnPreField">
-            <g:actionSubmit class="btn primary"
-                            style="display:inline"
-                            action="search"
-                            value="${message(code: 'default.button.search.label', default: 'Search')}"/>
-          </label>
+          <div class="clearfix">
+            <label for="query" class="btnPreField">
+              <g:actionSubmit class="btn primary"
+                              style="display:inline"
+                              action="search"
+                              value="${message(code: 'default.button.search.label', default: 'Search')}"/>
+            </label>
 
-          <div class="input">
-            <g:textField name="query" value="${query}" class="span11" id="searchField"/>
+            <div class="input">
+              <g:textField name="query" value="${query}" class="span11" id="searchField"/>
+            </div>
+          </div>
+
+          <div class="clearfix">
+            <g:each in="${categories}" var="cat">
+              <g:checkBox name="selectedCat" value="${cat.id}" checked="${selectedCat?.contains(cat.id.toString())}"/> ${cat.name}
+            </g:each>
           </div>
         </fieldset>
       </g:form>
