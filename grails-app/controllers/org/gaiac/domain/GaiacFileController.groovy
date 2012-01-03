@@ -13,19 +13,16 @@ class GaiacFileController {
   def searchableService
 
   def index() {
-    log.debug "test"
     redirect(action: "list", params: params)
   }
-
 
   def list() {
     params.max = Math.min(params.max ? params.int('max') : 10, 100)
 
     def res = GaiacFile.list(params)
 
-    [gaiacFileInstanceList: res, gaiacFileInstanceTotal: GaiacFile.count(), categories: Category.list(order: 'name')]
+    [gaiacFileInstanceList: res, gaiacFileInstanceTotal: GaiacFile.count(), categories: Category.containingFiles.listDistinct(order: 'name')]
   }
-
 
   def search() {
     if (!(params.query || params.selectedCat)) {
@@ -34,24 +31,34 @@ class GaiacFileController {
 
     params.max = Math.min(params.max ? params.int('max') : 10, 100)
 
-    String forgedQuery = params.query.split(' ').collect {"(*${it}* OR *${it} OR ${it}*)"}.join(" AND ")
-    def indexResponse = GaiacFile.search(forgedQuery)
-    def fileList = GaiacFile.findAllByIdInList(indexResponse.results*.id, params)
-
-    def selectedCat = [] << params.selectedCat
-    selectedCat = selectedCat.flatten()
-
+    def selectedCat = []
+    def catQuery
     if (params.selectedCat) {
-      def matchingCat
-
-
-      log.debug "selected cat = ${selectedCat}"
-      def fileByCat = GaiacFile.where {
-        categories.id in selectedCat.collect {it as Long}
-      }.list()
-
-      fileList = fileList.intersect(fileByCat)
+      selectedCat = [params.selectedCat].flatten()
+      def cats = Category.findAllByIdInList(selectedCat.collect {it as Long})
+      catQuery = cats.collect { "cat:" + it.name }.join(" OR ")
+      catQuery = "(" + catQuery + ")"
     }
+
+    def nameQuery
+    if (params.query) {
+      nameQuery = params.query.split(' ').collect {"(name:*${it}* OR name:*${it} OR name:${it}*)"}.join(" AND ")
+    }
+
+
+    String forgedQuery = nameQuery ? nameQuery : ''
+    if (forgedQuery) {
+      forgedQuery += catQuery ? ' AND ' + catQuery : ''
+    } else {
+      forgedQuery = catQuery
+    }
+
+
+    log.debug "QUERY = ${forgedQuery}"
+
+    def indexResponse = GaiacFile.search(forgedQuery)
+
+    def fileList = GaiacFile.findAllByIdInList(indexResponse.results*.id, params)
 
 
 
@@ -59,7 +66,7 @@ class GaiacFileController {
         model: [query: params.query,
             gaiacFileInstanceList: fileList,
             gaiacFileInstanceTotal: indexResponse.total,
-            categories: Category.list(order: 'name'),
+            categories: Category.containingFiles.listDistinct(order: 'name'),
             selectedCat: selectedCat]
     )
   }
@@ -110,8 +117,17 @@ class GaiacFileController {
       }
     }
 
+    def existingCat = gaiacFileInstance.categories*.id
+    def selectedCat = [params.categories].flatten()
+    def toRemove = existingCat.findAll {
+      !selectedCat.contains(it.toString())
+    }
+
+    toRemove.each {
+      gaiacFileInstance.removeFromCategories(Category.get(it as Long))
+    }
+
     gaiacFileInstance.properties = params
-    //gaiacFileInstance.categories = Category.getAll(params.categories)
 
     if (!gaiacFileInstance.save(flush: true)) {
       return render(view: "edit", model: [gaiacFileInstance: gaiacFileInstance])

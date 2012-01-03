@@ -16,6 +16,7 @@ class GaiacFile {
 
   Date lastUpdated
 
+  static belongsTo = Category
   static hasMany = [
       downloads: DownloadTrace,
       categories: Category
@@ -44,8 +45,8 @@ class GaiacFile {
   }
 
   static searchable = {
-    only = ['name']
-    spellCheck 'include'
+    only = ['name', 'categories']
+    categories(component: [maxDepth: 1])
   }
 
   static namedQueries = {
@@ -73,6 +74,14 @@ class GaiacFile {
     }
 
     findByCategoryIdIn { catIdList ->
+      categories {
+        'id' in catIdList
+      }
+      cache true
+    }
+
+    findAllByIdInAndCategoryIdIn { idList, catIdList ->
+      'id' in idList
       categories {
         'id' in catIdList
       }

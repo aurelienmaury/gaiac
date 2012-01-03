@@ -5,6 +5,8 @@ class Category {
   String name
   String description
 
+  static hasMany = [gaiacFiles: GaiacFile]
+
   static constraints = {
     name(
         blank: false,
@@ -23,6 +25,12 @@ class Category {
 
   static searchable = {
     only = ['name']
-    spellCheck 'include'
+    name(name: 'cat')
+  }
+
+  static namedQueries = {
+    containingFiles {
+      createAlias 'gaiacFiles', 'gf'
+    }
   }
 }
