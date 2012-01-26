@@ -38,21 +38,6 @@ grails.mime.types = [html: ['text/html', 'application/xhtml+xml'],
 // What URL patterns should be processed by the resources plugin
 grails.resources.adhoc.patterns = ['/images/*', '/css/*', '/js/*', '/plugins/*']
 
-grails.resources.modules = {
-  core {
-    dependsOn 'jquery'
-    resource url: '/css/bootstrap.css'
-    resource url: '/css/main.css'
-    resource url: '/js/bootstrap-alerts.js'
-    resource url: '/js/bootstrap-dropdown.js'
-  }
-
-  uploader {
-    resource url: '/css/jquery-ui-1.8.16.custom.css'
-    resource url: '/js/jquery-ui-1.8.16.custom.min.js'
-    resource url: '/js/jquery.ul.js'
-  }
-}
 // The default codec used to encode data with ${}
 grails.views.default.codec = "none" // none, html, base64
 grails.views.gsp.encoding = "UTF-8"

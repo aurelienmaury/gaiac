@@ -8,7 +8,7 @@ import org.gaiac.domain.Member
 import org.gaiac.domain.MemberRole
 import org.gaiac.domain.Role
 
-@Secured(['ROLE_ADMIN'])
+@Secured(['ROLE_ADMIN', 'ROLE_SUPERVISOR', 'ROLE_BASIC'])
 class UlController {
 
   private static final String FORM_FILES_NAME = 'uploadList'
@@ -45,6 +45,7 @@ class UlController {
         }
 
         log.debug "Upload succeed: ${onDiskFile.name}"
+
 
         Member.getAllAdmins().each { adminMember ->
           mailService.sendMail {

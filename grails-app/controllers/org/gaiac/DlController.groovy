@@ -5,7 +5,7 @@ import org.gaiac.domain.Member
 import org.gaiac.domain.DownloadTrace
 import grails.plugins.springsecurity.Secured
 
-@Secured(["hasAnyRole('ROLE_BASIC','ROLE_ADMIN')"])
+@Secured(['ROLE_BASIC','ROLE_ADMIN', 'ROLE_SUPERVISOR'])
 class DlController {
 
     def springSecurityService

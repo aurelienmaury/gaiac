@@ -3,7 +3,7 @@ package org.gaiac.domain
 import grails.plugins.springsecurity.Secured
 import org.springframework.dao.DataIntegrityViolationException
 
-@Secured(["hasAnyRole('ROLE_BASIC','ROLE_ADMIN')"])
+@Secured(['ROLE_BASIC', 'ROLE_ADMIN', 'ROLE_SUPERVISOR'])
 class GaiacFileController {
 
   static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
@@ -84,7 +84,7 @@ class GaiacFileController {
   }
 
 
-  @Secured(['ROLE_ADMIN'])
+  @Secured(['ROLE_ADMIN','ROLE_SUPERVISOR'])
   def edit() {
     def gaiacFileInstance = GaiacFile.get(params.id)
     if (!gaiacFileInstance) {
@@ -97,7 +97,7 @@ class GaiacFileController {
   }
 
 
-  @Secured(['ROLE_ADMIN'])
+  @Secured(['ROLE_ADMIN','ROLE_SUPERVISOR'])
   def update() {
 
     def gaiacFileInstance = GaiacFile.get(params.id)

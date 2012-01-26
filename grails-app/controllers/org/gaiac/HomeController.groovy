@@ -3,7 +3,7 @@ package org.gaiac
 import org.gaiac.domain.GaiacFile
 import grails.plugins.springsecurity.Secured
 
-@Secured(["hasAnyRole('ROLE_BASIC','ROLE_ADMIN')"])
+@Secured(['ROLE_BASIC','ROLE_ADMIN','ROLE_SUPERVISOR'])
 class HomeController {
 
     def index() { 
