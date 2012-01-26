@@ -79,7 +79,7 @@
           <g:each in="${gaiacFileInstanceList}" status="i" var="gaiacFileInstance">
             <tr>
               <td>
-                <sec:ifAllGranted roles="ROLE_ADMIN">
+                <sec:ifAnyGranted roles="ROLE_ADMIN,ROLE_SUPERVISOR">
 
                   <g:link action="edit"
                           id="${gaiacFileInstance.id}" title="${fieldValue(bean: gaiacFileInstance, field: "name")}">
@@ -87,7 +87,7 @@
                                       max="60"/>
                   </g:link>
 
-                </sec:ifAllGranted>
+                </sec:ifAnyGranted>
 
                 <sec:ifAllGranted roles="ROLE_BASIC">
 

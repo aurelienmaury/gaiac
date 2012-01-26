@@ -29,6 +29,10 @@ class BootStrap {
       new Role(authority: 'ROLE_ADMIN').save()
     }
 
+    if (!Role.findByAuthority('ROLE_SUPERVISOR')) {
+      new Role(authority: 'ROLE_SUPERVISOR').save()
+    }
+
     if (!Role.findByAuthority('ROLE_BASIC')) {
       new Role(authority: 'ROLE_BASIC').save()
     }
@@ -45,6 +49,8 @@ class BootStrap {
       new MemberRole(member: admin, role: Role.findByAuthority('ROLE_ADMIN')).save()
     }
 
+
+
     switch (GrailsUtil.environment) {
       case "development":
         def member = new Member(email: 'member@gaiac.org',
@@ -55,6 +61,15 @@ class BootStrap {
             passwordExpired: false).save(failOnError: true)
 
         new MemberRole(member: member, role: Role.findByAuthority('ROLE_BASIC')).save()
+
+        def sup = new Member(email: 'sup@gaiac.org',
+            password: 'sup',
+            enabled: true,
+            accountLocked: false,
+            accountExpired: false,
+            passwordExpired: false).save(failOnError: true)
+
+        new MemberRole(member: sup, role: Role.findByAuthority('ROLE_SUPERVISOR')).save()
         break
     }
   }
