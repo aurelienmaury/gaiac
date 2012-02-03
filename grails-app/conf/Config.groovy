@@ -14,7 +14,6 @@ if (System.getenv(envConfigKey)) {
   grails.config.locations << "file:" + System.getenv(envConfigKey)
 }
 
-
 grails.project.groupId = appName // change this to alter the default package name and Maven publishing destination
 grails.mime.file.extensions = true // enables the parsing of file extensions from URLs into the request format
 grails.mime.use.accept.header = false
@@ -33,7 +32,7 @@ grails.mime.types = [html: ['text/html', 'application/xhtml+xml'],
 ]
 
 // URL Mapping Cache Max Size, defaults to 5000
-//grails.urlmapping.cache.maxsize = 1000
+grails.urlmapping.cache.maxsize = 500
 
 // What URL patterns should be processed by the resources plugin
 grails.resources.adhoc.patterns = ['/images/*', '/css/*', '/js/*', '/plugins/*']
@@ -120,6 +119,8 @@ gaiac.max.dl.per.user = 4
 allowed.extensions = ['jpg', 'avi', 'mov', 'pdf', 'mkv', 'divx',
     'png', 'jpeg', 'gif', 'txt', 'zip', 'rar', 'r[0-9]*',
     'xls', 'doc', 'docx']
+
+
 
 /*
   Sample mail plugin configuration for GMail

@@ -23,6 +23,10 @@
         <g:layoutBody/>
 </div>
 
+<footer>
+<g:link url="https://github.com/aurelienmaury/gaiac">Powered by Gaïac</g:link>
+</footer>
+
 <r:layoutResources/>
 
 </body>
