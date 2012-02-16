@@ -8,3 +8,4 @@ stacktrace.log
 *.ipr
 *.iws
 out
+.idea
