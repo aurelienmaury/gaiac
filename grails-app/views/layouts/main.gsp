@@ -24,7 +24,7 @@
 </div>
 
 <footer>
-<g:link url="https://github.com/aurelienmaury/gaiac">Powered by Gaïac</g:link>
+<g:link target="_blank" url="https://github.com/aurelienmaury/gaiac">Powered by Gaïac</g:link>
 </footer>
 
 <r:layoutResources/>
