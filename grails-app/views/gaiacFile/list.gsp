@@ -53,13 +53,14 @@
                               class="ctxt w2"/>
 
             <g:sortableColumn property="dateCreated"
-                              title="${message(code: 'gaiacFile.downloadNumber.short.label', default: 'Uploaded')}"
+                              title="${message(code: 'gaiacFile.uploaded.short.label', default: 'Uploaded')}"
                               params="[query: query]"
                               class="ctxt w1"/>
 
             <g:sortableColumn property="downloadNumber"
                               title="${message(code: 'gaiacFile.downloadNumber.short.label', default: 'Dl Nb')}"
-                              params="[query: query]"
+                              params="[query: query, attrs:[title: message(code: 'gaiacFile.downloadNumber.alt')]]"
+
                               class="ctxt w1"/>
 
             <th class="w0"></th>
