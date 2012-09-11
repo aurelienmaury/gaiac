@@ -30,7 +30,9 @@
             <g:sortableColumn property="accountLocked" title="${message(code: 'member.accountLocked.label', default: 'Locked')}" />
           
             <g:sortableColumn property="accountExpired" title="${message(code: 'member.accountExpired.label', default: 'Expired')}" />
-          
+
+            <th class="w2 ctxt">${message(code: 'member.role.label', default: 'Roles')}</th>
+
           </tr>
         </thead>
         <tbody>
@@ -44,7 +46,9 @@
             <td><img src="${resource(dir:'images',file: memberInstance.accountLocked?'tick_16.png':'cross_16.png')}"/></td>
 
             <td><img src="${resource(dir:'images',file: memberInstance.accountExpired?'tick_16.png':'cross_16.png')}"/></td>
-          
+
+            <td>${memberInstance.authorities*.authority.join(', ')}</td>
+
           </tr>
         </g:each>
         </tbody>
