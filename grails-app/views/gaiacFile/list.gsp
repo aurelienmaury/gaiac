@@ -117,7 +117,7 @@
 
               <td class="ctxt">
                 <g:if test="${gaiacFileInstance.exturl}">
-                  <g:link url="${gaiacFileInstance.exturl}">
+                  <g:link url="${gaiacFileInstance.exturl}" target="_blank">
                     <img src="${resource(dir: 'images', file: 'internet_16.png')}"/>
                   </g:link>
                 </g:if>
